@@ -1,9 +1,9 @@
 package mb.booksy.domain.user;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public enum ApplicationUserRole {
-    CLIENT("ROLE_CLIENT"),
+  /*  CLIENT("ROLE_CLIENT"),
     PROVIDER("ROLE_PROVIDER");
 
     String userRole;
@@ -12,8 +12,12 @@ public enum ApplicationUserRole {
         this.userRole = userRole;
     }
 
+   */
+/*
     public SimpleGrantedAuthority getUserRole() {
         return new SimpleGrantedAuthority(userRole);
     }
+
+ */
 
 }

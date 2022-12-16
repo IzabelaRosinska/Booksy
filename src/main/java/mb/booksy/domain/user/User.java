@@ -2,24 +2,19 @@ package mb.booksy.domain.user;
 
 import lombok.*;
 import mb.booksy.domain.BaseEntity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity {
 
-    public User(Long id, String login, String name, String surname, String password, SimpleGrantedAuthority userRole) {
+    public User(Long id, String login, String name, String surname, String password, String userRole) {
         super(id);
         this.login = login;
         this.name = name;
@@ -53,9 +48,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @NotNull
     @Column(name = "role")
-    private SimpleGrantedAuthority userRole;
+    private String userRole;
 
-
+/*
     @Override
     public Collection<SimpleGrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>(0);
@@ -63,7 +58,9 @@ public class User extends BaseEntity implements UserDetails {
         return list;
     }
 
+ */
 
+/*
     @Override
     public String getUsername() {
         return name;
@@ -94,4 +91,5 @@ public class User extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+    */
 }
