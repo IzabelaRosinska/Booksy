@@ -8,7 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -40,5 +42,5 @@ public class DeliveryPoint extends BaseEntity {
     String contact;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deliveryPoint")
-    private List<PointDelivery> pointDeliveries = new ArrayList<>();
+    private Set<PointDelivery> pointDeliveries = new HashSet<>();
 }

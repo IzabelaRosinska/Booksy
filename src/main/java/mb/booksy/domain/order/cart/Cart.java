@@ -9,7 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -33,8 +35,8 @@ public class Cart extends BaseEntity {
     private Integer itemNumber;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private List<ItemInCart> itemsCart = new ArrayList<>();
+    private Set<ItemInCart> itemsCart = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
-    private List<Order> orders = new ArrayList<>();
+    private Set<Order> orders = new HashSet<>();
 }

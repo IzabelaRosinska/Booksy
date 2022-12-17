@@ -11,7 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -31,5 +33,5 @@ public class DeliveryCompany extends BaseEntity {
     private String companyName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "deliveryCompany")
-    private List<Delivery> deliveries = new ArrayList<>();
+    private Set<Delivery> deliveries = new HashSet<>();
 }

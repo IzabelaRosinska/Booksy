@@ -16,9 +16,11 @@ import javax.validation.constraints.NotEmpty;
 public class ItemInCart extends BaseEntity {
 
     @Builder
-    public ItemInCart(Long id, Integer number) {
+    public ItemInCart(Long id, Integer number, Item item, Cart cart) {
         super(id);
         this.number = number;
+        this.cart = cart;
+        this.item = item;
     }
 
     @NotEmpty

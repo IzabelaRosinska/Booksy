@@ -6,7 +6,9 @@ import lombok.NoArgsConstructor;
 import mb.booksy.domain.BaseEntity;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -24,5 +26,5 @@ public class InpostDelivery extends BaseEntity {
     private InpostBox inpostBox;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inpostDelivery")
-    private List<Delivery> deliveries = new ArrayList<>();
+    private Set<Delivery> deliveries = new HashSet<>();
 }

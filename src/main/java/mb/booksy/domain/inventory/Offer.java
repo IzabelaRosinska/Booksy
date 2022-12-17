@@ -8,7 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,5 +30,5 @@ public class Offer extends BaseEntity {
     private String offerName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "offer")
-    private List<Item> items = new ArrayList<>();
+    private Set<Item> items = new HashSet<>();
 }

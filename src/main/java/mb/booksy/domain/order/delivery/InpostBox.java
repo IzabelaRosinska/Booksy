@@ -8,7 +8,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -28,5 +30,5 @@ public class InpostBox extends BaseEntity {
     private String boxAddress;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "inpostBox")
-    private List<InpostDelivery> inpostDeliveries = new ArrayList<>();
+    private Set<InpostDelivery> inpostDeliveries = new HashSet<>();
 }

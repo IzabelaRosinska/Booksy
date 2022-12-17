@@ -10,7 +10,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -44,5 +46,5 @@ public class Payment extends BaseEntity {
     private PaymentType paymentType;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "payment")
-    private List<Order> orders = new ArrayList<>();
+    private Set<Order> orders = new HashSet<>();
 }
