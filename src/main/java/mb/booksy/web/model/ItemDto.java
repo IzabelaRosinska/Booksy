@@ -46,4 +46,20 @@ public class ItemDto {
     public Long getId() {
         return id;
     }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public String getItemImage() {
+        return itemImage;
+    }
+
+    public Integer getCartAmount() {
+        return cartAmount;
+    }
+
+    public Double getCartPrice() {
+        return cartPrice;
+    }
 }

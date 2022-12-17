@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ItemRepository extends CrudRepository<Item, Long> {
 
-    @Query(nativeQuery = true, value = "SELECT * FROM items INNER JOIN itemsInCarts ON itemsInCarts.item_id = items.id WHERE (itemsInCarts.cart_id == ?1)")
+    @Query(nativeQuery = true, value = "SELECT * FROM items INNER JOIN items_in_carts ON items_in_carts.item_id = items.id WHERE items_in_carts.cart_id = ?1")
     List<Item> findAllInCart(Long cartId);
 
 

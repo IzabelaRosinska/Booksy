@@ -2,6 +2,7 @@ package mb.booksy.services;
 
 
 import mb.booksy.domain.inventory.Item;
+import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
 import mb.booksy.web.mapper.ItemMapper;
 import mb.booksy.web.model.ItemDto;
@@ -21,10 +22,13 @@ public class ItemServiceImpl implements ItemService {
 
 
     private final ItemRepository itemRepository;
-    private ItemMapper mapper = Mappers.getMapper(ItemMapper.class);
+    private final ItemInCartRepository itemInCartRepository;
+    private ItemMapper mapper;
 
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, ItemMapper mapper) {
         this.itemRepository = itemRepository;
+        this.itemInCartRepository = itemInCartRepository;
+        this.mapper = mapper;
     }
 
 
@@ -40,13 +44,13 @@ public class ItemServiceImpl implements ItemService {
 
         List<ItemDto> itemsInCart = itemRepository.findAllInCart(cartId)
                 .stream()
-                .map(item -> getItemDetails(mapper.itemToItemDto(item)))
+                .map(item -> getItemDetails(mapper.itemToItemDto(item), cartId))
                 .collect(Collectors.toList());
 
         return itemsInCart;
     }
 
-    private ItemDto getItemDetails(ItemDto item){
+    private ItemDto getItemDetails(ItemDto item, Long cartId){
         String itemPhoto = "";
         try{
             itemPhoto = new String(Base64.encodeBase64(itemRepository.findById(item.getId()).get().getItemImage()), "UTF-8");
@@ -54,8 +58,10 @@ public class ItemServiceImpl implements ItemService {
             e.printStackTrace();
         }
         item.setImage(itemPhoto);
-        item.setCartAmount(0);
-        item.setCartPrice(0.0);
+        int amount = itemInCartRepository.findItemInCart(item.getId(), cartId).get(0).getNumber();
+        double price = amount * itemRepository.findById(item.getId()).get().getPrice();
+        item.setCartAmount(amount);
+        item.setCartPrice(price);
         return item;
     }
 

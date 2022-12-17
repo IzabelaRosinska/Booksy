@@ -4,12 +4,19 @@ package mb.booksy.web.mapper;
 import mb.booksy.domain.inventory.Item;
 import mb.booksy.web.model.ItemDto;
 import org.mapstruct.*;
+import org.springframework.stereotype.Component;
 
-@Mapper
-public interface ItemMapper {
+//@Mapper
+@Component
+public class ItemMapper {
 
-    ItemDto itemToItemDto(Item item);
-    Item itemDtoToItem(ItemDto dto);
+    public ItemDto itemToItemDto(Item item) {
+        ItemDto itemDto = new ItemDto();
+        itemDto.setId(item.getId());
+        itemDto.setItemName(item.getItemName());
+        return itemDto;
+    }
+    //public Item itemDtoToItem(ItemDto dto);
 /*
     @Mappings({
             @Mapping(target="id", source="dto.id"),

@@ -28,8 +28,8 @@ public class CartController {
 
  */
 
-    @GetMapping({"/cart", "cart.html"})
-    public String getCart(@PathVariable Long cartId, Model model) {
+    @GetMapping({"/cart/{id}", "cart/{id}.html"})
+    public String getCart(@PathVariable("id") Long cartId, Model model) {
         List<ItemDto> results = itemService.findAllCartItem(cartId);
         if (!results.isEmpty())
             model.addAttribute("selections", results);

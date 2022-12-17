@@ -1,15 +1,14 @@
 package mb.booksy.domain.order.cart;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import mb.booksy.domain.BaseEntity;
 import mb.booksy.domain.inventory.Item;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "itemsInCarts")
@@ -23,7 +22,6 @@ public class ItemInCart extends BaseEntity {
         this.item = item;
     }
 
-    @NotEmpty
     @Column(name = "number")
     private Integer number;
 

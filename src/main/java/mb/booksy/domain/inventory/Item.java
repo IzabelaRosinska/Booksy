@@ -40,11 +40,10 @@ public class Item extends BaseEntity {
     @Column(name = "producer_name")
     private String producerName;
 
-    @NotEmpty
+
     @Column(name = "price")
     private Double price;
 
-    @NotEmpty
     @Column(name = "availability")
     private Integer availability;
 
@@ -58,4 +57,8 @@ public class Item extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     private Set<ItemInCart> cartItems = new HashSet<>();
+
+    public byte[] getItemImage() {
+        return itemImage;
+    }
 }
