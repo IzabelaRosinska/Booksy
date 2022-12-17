@@ -9,6 +9,7 @@ public class ItemDto {
     private String itemImage;
     private Integer cartAmount;
     private Double cartPrice;
+    private String currency;
 
     @Override
     public boolean equals(Object o) {
@@ -41,6 +42,14 @@ public class ItemDto {
 
     public void setCartPrice(Double cartPrice) {
         this.cartPrice = cartPrice;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public Long getId() {

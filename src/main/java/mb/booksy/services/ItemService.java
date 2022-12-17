@@ -8,4 +8,6 @@ public interface ItemService extends BaseService<Item, Long> {
 
     List<ItemDto> findAllCartItem(Long cartId);
 
+    Double countPrice(Long cartId);
+
 }

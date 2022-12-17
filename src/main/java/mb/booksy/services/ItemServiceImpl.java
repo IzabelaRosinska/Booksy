@@ -66,6 +66,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Double countPrice(Long cartId) {
+        double price = 0;
+        List<ItemDto> items = findAllCartItem(cartId);
+        for(ItemDto item: items) {
+            price += item.getCartPrice();
+        }
+        return price;
+    }
+
+    @Override
     public Item findById(Long itemId) {
         return itemRepository.findById(itemId).orElse(null);
     }

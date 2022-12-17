@@ -8,10 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -60,5 +57,18 @@ public class Item extends BaseEntity {
 
     public byte[] getItemImage() {
         return itemImage;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return itemName.equals(item.itemName) && producerName.equals(item.producerName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemName, producerName);
     }
 }
