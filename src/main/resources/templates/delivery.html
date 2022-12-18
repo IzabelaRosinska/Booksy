@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/mainLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+</head>
+<body>
+<div class="form group row">
+    <div class="form-group col-md-8">
+        <h1 style="margin-left:10px">Wybierz sposób dostawy</h1><br>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/inpost/(cartId=${cart_id})}"><img th:src="|data:image/jpg;base64,${d1}|" id="img1" width="160px" height="160px" style="margin: 10px 0px 10px 0px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/kurier/(cartId=${cart_id})}"><img th:src="|data:image/jpg;base64,${d2}|" id="img2" width="160px" height="160px" style="margin: 10px 0px 10px 0px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/zabka/(cartId=${cart_id})}"><img th:src="|data:image/jpg;base64,${d3}|" id="img3" width="160px" height="160px" style="margin: 10px 0px 10px 0px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/ruch/(cartId=${cart_id})}"><img th:src="|data:image/jpg;base64,${d4}|" id="img4" width="160px" height="160px" style="margin: 10px 0px 10px 0px"/></a>
+    </div>
+    <div class="form-group col-md-2" style="margin-left:50px">
+        <h1>Podsumowanie</h1>
+        <br>
+        <p th:text="${desc}" class="ridge" style="padding-left: 30px; margin-top:10px; padding-top: 30px; font-size: 18px; font-family: Arial"></p>
+    </div>
+</div>
+<div class="form group row">
+    <label style="margin-left:80px;font-size: 20px; margin-top:10px">Inpost</label>
+    <label style="margin-left:120px;font-size: 20px; margin-top:10px; font-family: Arial">Kurier</label>
+    <label style="margin-left:110px;font-size: 20px; margin-top:10px; font-family: Arial">PO Żabka</label>
+    <label style="margin-left:100px;font-size: 20px; margin-top:10px; font-family: Arial">PO RUCH</label>
+</div>
+
+
+</body>
+</html>

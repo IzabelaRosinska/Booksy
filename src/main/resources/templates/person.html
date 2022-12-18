@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/mainLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Person</title>
+</head>
+<body>
+<!--/*@thymesVar id="personDto" type="mb.booksy.web.model.PersonDto"*/-->
+<div class="form group row">
+    <div class="form-group col-md-8">
+        <h1>Uzupełnij dane odbiorcy</h1>
+        <br>
+        <form th:object="${personDto}" th:action="@{/person/(cartId=${cart_id})}" method="post" class="form-horizontal">
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="name" class="col-sm-2 col-form-label" th:text="Imię" style="margin-left: 0px"></label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="name" th:field="*{name}">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="surname" class="col-sm-2 col-form-label" th:text="Nazwisko" style="margin-left: 0px"></label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="surname" th:field="*{surname}">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="mail" class="col-sm-2 col-form-label" th:text="Email" style="margin-left: 0px"></label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="mail" th:field="*{email}">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="telephone" class="col-sm-2 col-form-label" th:text="Telefon" style="margin-left: 0px"></label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="telephone" th:field="*{phone}">
+                </div>
+            </div>
+            <div class="row">
+                <br>
+                <button class="btn btn-primary" style="width: 90px;margin-top:10px;margin-left: 300px; background-color: #4682B4;color:white" type="submit">Dalej</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-group col-md-2" style="margin-left:50px">
+        <h1>Podsumowanie</h1>
+        <br>
+        <p th:text="${desc}" class="ridge" style="padding-left: 30px; padding-top: 30px; font-size: 18px; font-family: Arial"></p>
+    </div>
+</div>
+
+
+
+</body>
+</html>

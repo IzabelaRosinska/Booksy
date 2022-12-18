@@ -42,7 +42,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        /*
+
         Item item1 = new Item(1L, "Hobbit, czyli tam i spowrotem", "J.R.R. Tolkien", 21.46, 12, createImage("src/main/resources/static/resources/images/hobbit.jpg"));
         Item item2 = new Item(2L, "Harry Potter. Tom 1", "Rowling J. K.", 20.99, 3, createImage("src/main/resources/static/resources/images/harry.jpg"));
         Item item3 = new Item(3L,"Igrzyska śmierci. Tom 3", "Collins Suzanne", 17.21, 1, createImage("src/main/resources/static/resources/images/igrzyska.jpg"));
@@ -77,7 +77,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         itemInCartRepository.save(new ItemInCart(9L, 2, item1, cart4));
         itemInCartRepository.save(new ItemInCart(10L, 3, item5, cart4));
 
-         */
+
     }
 
 

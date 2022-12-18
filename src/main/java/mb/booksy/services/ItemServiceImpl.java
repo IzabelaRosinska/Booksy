@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,6 +76,28 @@ public class ItemServiceImpl implements ItemService {
             price += item.getCartPrice();
         }
         return price;
+    }
+
+    @Override
+    public List<String> findDeliveryImage() {
+        List<String> images = new ArrayList<>();
+        images.add(createImage("src/main/resources/static/resources/images/box.jpg"));
+        images.add(createImage("src/main/resources/static/resources/images/dhl.jpg"));
+        images.add(createImage("src/main/resources/static/resources/images/zabka.jpg"));
+        images.add(createImage("src/main/resources/static/resources/images/ruch.jpg"));
+        return images;
+    }
+
+    public String createImage(String path) {
+        byte[] array = null;
+        String itemPhoto = "";
+        try {
+            array = Files.readAllBytes(Paths.get(path));
+            itemPhoto = new String(Base64.encodeBase64(array), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemPhoto;
     }
 
     @Override
