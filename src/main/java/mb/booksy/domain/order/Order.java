@@ -32,10 +32,21 @@ public class Order extends BaseEntity {
     @Column(name = "czy_zakonczone")
     private Boolean czyZakonczone;
 
+    @Column(name = "receiver_name")
+    private String receiverName;
+
+    @Column(name = "receiver_surname")
+    private String receiverSurname;
+
+    @Column(name = "receiver_mail")
+    private String receiverMail;
+
+    @Column(name = "receiver_phone")
+    private String receiverPhone;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<Complaint> complaints = new HashSet<>();
 
-    @NotNull
     @Column(name = "order_status")
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;

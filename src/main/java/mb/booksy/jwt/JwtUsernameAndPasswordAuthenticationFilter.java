@@ -63,7 +63,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         response.addCookie(tokenCookie);
 
         if(authResult.getAuthorities().contains(CLIENT.getUserRole()))
-            response.sendRedirect("/");
+            response.sendRedirect("/shop");
     }
 /*
     public Long getClientId() throws AuthException {

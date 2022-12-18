@@ -1,6 +1,5 @@
 package mb.booksy.web.controller;
 
-import mb.booksy.exceptions.AuthException;
 import mb.booksy.exceptions.UserAlreadyExistException;
 import mb.booksy.services.UserAuthenticationService;
 import mb.booksy.web.model.UserDto;
@@ -10,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import javax.validation.Valid;
 
 @Controller
@@ -24,13 +22,12 @@ public class MainController {
 
     @GetMapping("/")
     public String getHomePage(){
-        try {
-            Long clientId = userAuthService.getAuthenticatedClientId();
-            System.out.print(clientId);
-        }catch(AuthException | javax.security.auth.message.AuthException e) {
-            System.out.print("blad");
-        }
         return "home";
+    }
+
+    @GetMapping("/shop")
+    public String getShopPage(){
+        return "shop";
     }
 
     @GetMapping("/login")

@@ -10,7 +10,7 @@
     <div class="form-group col-md-8">
         <h1>Wprowadź adres odbioru zamówienia</h1>
         <br>
-        <form th:object="${courierDeliveryDto}" th:action="@{/kurier/(cartId=${cart_id})}" method="post" class="form-horizontal">
+        <form th:object="${courierDeliveryDto}" th:action="@{/kurier}" method="post" class="form-horizontal">
             <div class="form-group row" style="margin-top: 10px">
                 <label for="address1" class="col-sm-2 col-form-label" style="margin-left: 0px">Ulica, numer</label>
                 <div class="form-group col-md-7">

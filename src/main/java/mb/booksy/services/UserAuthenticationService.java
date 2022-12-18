@@ -37,11 +37,9 @@ public class UserAuthenticationService implements UserDetailsService {
             throw new UsernameNotFoundException("Blad 0");
     }
 
-    public Long getAuthenticatedClientId() throws AuthException {
+    public Long getAuthenticatedClientId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client client = clientRepository.selectClientByUsername(authentication.getName());
-        if(client == null)
-            throw new AuthException("Blad 1");
         return client.getId();
     }
 

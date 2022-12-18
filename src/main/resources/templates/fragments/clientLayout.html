@@ -69,19 +69,19 @@
                     </a>
                 </li>
 
-                <li th:replace="::menuItem ('/','main', 'sklep', 'home',' Sklep')">
+                <li th:replace="::menuItem ('/shop','shop', 'sklep', 'shup',' Sklep')">
                     <span class="glyphicon glyphicon-home" aria-hidden="true" style="margin-left: 5px"></span>
                     <span>Shop</span>
                 </li>
 
-                <li th:replace="::menuItem ('/login','login','zaloguj','log-in',' Zaloguj')">
-                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-                    <span>Sign In</span>
+                <li th:replace="::menuItem ('/cart','cart', 'koszyk', 'shopping-cart',' Koszyk')">
+                    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+                    <span>Cart</span>
                 </li>
 
-                <li th:replace="::menuItem ('/signup','signup','zarejestruj','heart-empty',' Zarejestruj')">
-                    <span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span>
-                    <span>Sign Up</span>
+                <li th:replace="::menuItem ('/logout','log out','wyloguj','log-out',' Wyloguj')">
+                    <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                    <span>Log out</span>
                 </li>
 
             </ul>

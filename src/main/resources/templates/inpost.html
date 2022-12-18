@@ -10,7 +10,7 @@
     <div class="form-group col-md-6">
         <h1>Wybierz paczkomat Inpost</h1>
         <br>
-        <form th:object="${inpostBoxDto}" th:action="@{/inpost/(cartId=${cart_id})}" method="post" class="form-horizontal">
+        <form th:object="${inpostBoxDto}" th:action="@{/inpost}" method="post" class="form-horizontal">
             <div class="form-group blu-margin">
                 <select class="form-control" th:field="*{id}"  id="Punkt Odbioru Inpost" style="margin-left: 20px">
                     <option value="0">Punkt Odbioru Inpost</option>

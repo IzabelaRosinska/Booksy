@@ -3,6 +3,7 @@ package mb.booksy.services;
 import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
+import mb.booksy.web.model.PersonDto;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -34,17 +35,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void delete(Cart object) {
-
-    }
+    public void delete(Cart object) {}
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Long aLong) {}
 
-    }
-
-    @Override
     @Transactional
+    @Override
     public void deleteItemFromCart(Long cartId, Long itemId) {
         itemInCartRepository.deleteItemInCart(cartId, itemId);
     }
@@ -54,7 +51,7 @@ public class CartServiceImpl implements CartService {
     public String updateItemNumber(Long cartId, Long itemId, Integer new_number) {
         Integer maxNumber = itemRepository.findById(itemId).get().getAvailability();
         if(new_number > maxNumber)
-            return "Liczba dostępnych sztuk - " + String.valueOf(maxNumber);
+            return "Liczba dostępnych sztuk - " + maxNumber;
         else if(new_number < 1)
             return "Liczba sztuk musi być większa od 0";
         else {

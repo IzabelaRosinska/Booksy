@@ -10,6 +10,8 @@ public interface ItemService extends BaseService<Item, Long> {
 
     Double countPrice(Long cartId);
 
+    Double countDiscount(Long cartId);
+
     List<String> findDeliveryImage();
 
 }

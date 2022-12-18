@@ -34,7 +34,6 @@ public class ItemServiceImpl implements ItemService {
         this.mapper = mapper;
     }
 
-
     @Override
     public Set<Item> findAll() {
         Set<Item> items = new HashSet<>();
@@ -44,7 +43,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> findAllCartItem(Long cartId) {
-
         List<ItemDto> itemsInCart = itemRepository.findAllInCart(cartId)
                 .stream()
                 .map(item -> getItemDetails(mapper.itemToItemDto(item), cartId))
@@ -76,6 +74,14 @@ public class ItemServiceImpl implements ItemService {
             price += item.getCartPrice();
         }
         return price;
+    }
+
+    @Override
+    public Double countDiscount(Long cartId) {
+        double newPrice = countPrice(cartId) * 90;
+        newPrice = Math.round(newPrice);
+        newPrice /= 100;
+        return newPrice;
     }
 
     @Override
