@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/mainLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+<body>
+<div class="form group row">
+    <div class="form-group col-md-8">
+
+    </div>
+    <div class="form-group col-md-2" style="margin-left:50px">
+        <h1>Podsumowanie</h1>
+        <br>
+        <p th:text="${desc}" class="ridge" style="padding-left: 30px; margin-top:10px; padding-top: 30px; font-size: 18px; font-family: Arial"></p>
+    </div>
+</div>
+
+</body>
+</html>

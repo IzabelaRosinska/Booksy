@@ -4,9 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import mb.booksy.domain.inventory.Item;
 import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.domain.order.cart.ItemInCart;
-import mb.booksy.repository.CartRepository;
-import mb.booksy.repository.ItemInCartRepository;
-import mb.booksy.repository.ItemRepository;
+import mb.booksy.domain.order.delivery.DeliveryPoint;
+import mb.booksy.domain.order.delivery.InpostBox;
+import mb.booksy.repository.*;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -22,11 +22,15 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final CartRepository cartRepository;
     private final ItemRepository itemRepository;
     private final ItemInCartRepository itemInCartRepository;
+    private final InpostBoxRepository inpostBoxRepository;
+    private final DeliveryPointRepository deliveryPointRepository;
 
-    public DataLoader(CartRepository cartRepository, ItemRepository itemRepository, ItemInCartRepository itemInCartRepository) {
+    public DataLoader(CartRepository cartRepository, ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, InpostBoxRepository inpostBoxRepository, DeliveryPointRepository deliveryPointRepository) {
         this.cartRepository = cartRepository;
         this.itemRepository = itemRepository;
         this.itemInCartRepository = itemInCartRepository;
+        this.inpostBoxRepository = inpostBoxRepository;
+        this.deliveryPointRepository = deliveryPointRepository;
     }
 
     public byte[] createImage(String path) {
@@ -77,7 +81,27 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         itemInCartRepository.save(new ItemInCart(9L, 2, item1, cart4));
         itemInCartRepository.save(new ItemInCart(10L, 3, item5, cart4));
 
+        inpostBoxRepository.save(InpostBox.builder().id(1L).boxAddress("ul. Boguszowska 82, 54-046 Wrocław").build());
+        inpostBoxRepository.save(InpostBox.builder().id(2L).boxAddress("ul. Biała 19, 55-041 Wrocław").build());
+        inpostBoxRepository.save(InpostBox.builder().id(3L).boxAddress("ul. Czekoladowa 12, 32-111 Warszawa").build());
+        inpostBoxRepository.save(InpostBox.builder().id(4L).boxAddress("ul. Niedźwiedzia 1, 76-523 Warszawa").build());
+        inpostBoxRepository.save(InpostBox.builder().id(5L).boxAddress("ul. Żółta 10, 32-234 Gdańsk").build());
+        inpostBoxRepository.save(InpostBox.builder().id(6L).boxAddress("ul. Kamieńskiego 112b, 23-987 Szczecin").build());
+        inpostBoxRepository.save(InpostBox.builder().id(7L).boxAddress("ul. Żeromskiego 3, 55-210 Szczecin").build());
+        inpostBoxRepository.save(InpostBox.builder().id(8L).boxAddress("ul. Kazimierza Wielkiego, 34-112 Kraków").build());
+        inpostBoxRepository.save(InpostBox.builder().id(9L).boxAddress("ul. Ziemna 1, 76-433 Legnica").build());
+        inpostBoxRepository.save(InpostBox.builder().id(10L).boxAddress("ul. Karmelkowa 76, 54-044 Poznań").build());
 
+        deliveryPointRepository.save(DeliveryPoint.builder().id(1L).pointName("Żabka").addressName("ul. Boguszowska 82, 54-046 Wrocław").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(2L).pointName("Żabka").addressName("ul. Biała 19, 55-041 Wrocław").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(3L).pointName("Żabka").addressName("ul. Czekoladowa 12, 32-111 Warszawa").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(4L).pointName("Żabka").addressName("ul. Niedźwiedzia 1, 76-523 Warszawa").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(5L).pointName("Żabka").addressName("ul. Żółta 10, 32-234 Gdańsk").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(6L).pointName("Żabka").addressName("ul. Kamieńskiego 112b, 23-987 Szczecin").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(7L).pointName("Kiosk RUCH").addressName("ul. Żeromskiego 3, 55-210 Szczecin").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(8L).pointName("Kiosk RUCH").addressName("ul. Kazimierza Wielkiego, 34-112 Kraków").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(9L).pointName("Kiosk RUCH").addressName("ul. Ziemna 1, 76-433 Legnica").build());
+        deliveryPointRepository.save(DeliveryPoint.builder().id(10L).pointName("Kiosk RUCH").addressName("ul. Karmelkowa 76, 54-044 Poznań").build());
     }
 
 

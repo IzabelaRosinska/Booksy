@@ -2,6 +2,7 @@ package mb.booksy.web.controller;
 
 import mb.booksy.services.CartService;
 import mb.booksy.services.ItemService;
+import mb.booksy.web.model.CourierDeliveryDto;
 import mb.booksy.web.model.ItemDto;
 import mb.booksy.web.model.PersonDto;
 import org.springframework.stereotype.Controller;
@@ -103,12 +104,22 @@ public class CartController {
     }
 
     @GetMapping({"/kurier/{cartId}", "kurier/{cartId}.html", "/kurier"})
-    public String chooseCourier(@RequestParam("cartId") Long cartId, Model model) {
+    public String chooseCourier(@RequestParam("cartId") Long cartId, CourierDeliveryDto courierDeliveryDto, Model model) {
         double price = itemService.countPrice(Long.valueOf(cartId));
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
         model.addAttribute("cart_id", Long.valueOf(cartId));
 
         return "courier";
+    }
+
+    @PostMapping({"/kurier/{cartId}", "kurier/{cartId}.html", "/kurier"})
+    public String saveCourierDelivery(@RequestParam("cartId") Long cartId, CourierDeliveryDto courierDeliveryDto, Model model) {
+        double price = itemService.countPrice(Long.valueOf(cartId));
+        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+        model.addAttribute("cart_id", Long.valueOf(cartId));
+        if(courierDeliveryDto != null)
+            System.out.print(courierDeliveryDto.getAddress1()); //zapisanie danych dostawy
+        return "payment";
     }
 
     @GetMapping({"/zabka/{cartId}", "zabka/{cartId}.html", "/zabka"})
@@ -127,6 +138,15 @@ public class CartController {
         model.addAttribute("cart_id", Long.valueOf(cartId));
 
         return "ruch";
+    }
+
+    @GetMapping({"/payment/{cartId}", "payment/{cartId}.html", "/payment"})
+    public String getPaymentMethods(@RequestParam("cartId") Long cartId, Model model) {
+        double price = itemService.countPrice(Long.valueOf(cartId));
+        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+        model.addAttribute("cart_id", Long.valueOf(cartId));
+
+        return "payment";
     }
 
 

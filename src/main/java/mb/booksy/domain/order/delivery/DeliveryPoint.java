@@ -19,7 +19,7 @@ import java.util.Set;
 public class DeliveryPoint extends BaseEntity {
 
     @Builder
-    public DeliveryPoint(Long id, String point_name, String addressName, String contact) {
+    public DeliveryPoint(Long id, String pointName, String addressName, String contact) {
         super(id);
         this.pointName = pointName;
         this.addressName = addressName;
@@ -36,8 +36,6 @@ public class DeliveryPoint extends BaseEntity {
     @Column(name = "address_name")
     String addressName;
 
-    @NotBlank
-    @NotEmpty
     @Column(name = "contact")
     String contact;
 
