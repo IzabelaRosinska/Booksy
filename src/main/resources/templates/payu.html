@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/mainLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>PayU</title>
+</head>
+<body>
+<div class="form group row">
+    <div class="form-group col-md-8">
+        <h1 style="margin-left:10px">Wybierz swój bank</h1><br>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d1}|" id="img1" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/jpg;base64,${d2}|" id="img2" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d3}|" id="img3" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/jpg;base64,${d4}|" id="img4" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d5}|" id="img5" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d6}|" id="img6" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d7}|" id="img7" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d8}|" id="img8" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+        <a type="button" class="btn btn-outline" style="background-color: transparent" th:href="@{/bank/(cartId=${cart_id})}"><img th:src="|data:image/png;base64,${d8}|" id="img9" width="210px" height="200px" style="margin: 10px 0px 10px 10px"/></a>
+    </div>
+    <div class="form-group col-md-2" style="margin-left:50px">
+        <h1>Podsumowanie</h1>
+        <br>
+        <p th:text="${desc}" class="ridge" style="padding-left: 30px; margin-top:10px; padding-top: 30px; font-size: 18px; font-family: Arial"></p>
+    </div>
+</div>
+
+</body>
+</html>

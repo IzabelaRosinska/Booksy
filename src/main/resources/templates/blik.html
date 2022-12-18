@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/mainLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Blik</title>
+</head>
+<body>
+<!--/*@thymesVar id="paymentDto" type="mb.booksy.web.model.PaymentDto"*/-->
+<div class="form group row">
+    <div class="form-group col-md-6">
+        <h1>Transakcja numer </h1>
+        <br>
+        <form th:object="${paymentDto}" th:action="@{/data/(cartId=${cart_id})}" method="post" class="form-horizontal">
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="kwota" class="col-sm-3 col-form-label" style="margin-left: 0px">Kwota</label>
+                <div class="form-group col-md-5">
+                    <input size="100" type="text" readonly class="form-control" id="kwota" name="kwota" th:field="*{kwota}">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="kod" class="col-sm-3 col-form-label" style="margin-left: 0px">Kod BLIK</label>
+                <div class="form-group col-md-5">
+                    <input size="100" type="text" class="form-control" id="kod" name="kod" th:field="*{kod}">
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="col-sm-2">
+                    <a type="button" class="btn btn-outline" th:text="Anuluj" th:href="@{/cart/(cartId=${cart_id})}" style="width: 90px;margin-top:0px;margin-left: 60px; background-color: gray;color:white" ></a>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary" style="width: 90px;margin-top:0px;margin-left: 90px; background-color: #4682B4;color:white" type="submit">Zapłać</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>
