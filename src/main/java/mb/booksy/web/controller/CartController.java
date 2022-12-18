@@ -1,9 +1,6 @@
 package mb.booksy.web.controller;
 
-import mb.booksy.services.CartService;
-import mb.booksy.services.DeliveryService;
-import mb.booksy.services.ItemService;
-import mb.booksy.services.PaymentService;
+import mb.booksy.services.*;
 import mb.booksy.web.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +14,15 @@ public class CartController {
     private final CartService cartService;
     private final DeliveryService deliveryService;
     private final PaymentService paymentService;
+    private final UserAuthenticationService userAuthenticationService;
     private String response = "";
 
-    public CartController(ItemService itemService, CartService cartService, DeliveryService deliveryService, PaymentService paymentService) {
+    public CartController(ItemService itemService, CartService cartService, DeliveryService deliveryService, PaymentService paymentService, UserAuthenticationService userAuthenticationService) {
         this.itemService = itemService;
         this.cartService = cartService;
         this.deliveryService = deliveryService;
         this.paymentService = paymentService;
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     //cart modification

@@ -2,19 +2,25 @@ package mb.booksy.domain.user;
 
 import lombok.*;
 import mb.booksy.domain.BaseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public class User extends BaseEntity {
+public class Person extends BaseEntity implements UserDetails {
 
-    public User(Long id, String login, String name, String surname, String password, String userRole) {
+    public Person(Long id, String login, String name, String surname, String password, SimpleGrantedAuthority userRole) {
         super(id);
         this.login = login;
         this.name = name;
@@ -23,8 +29,6 @@ public class User extends BaseEntity {
         this.userRole = userRole;
     }
 
-    @NotBlank
-    @NotEmpty
     @Column(name = "login")
     private String login;
 
@@ -33,8 +37,6 @@ public class User extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @NotBlank
-    @NotEmpty
     @Column(name = "surname")
     private String surname;
 
@@ -48,9 +50,9 @@ public class User extends BaseEntity {
 
     @NotNull
     @Column(name = "role")
-    private String userRole;
+    private SimpleGrantedAuthority userRole;
 
-/*
+
     @Override
     public Collection<SimpleGrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>(0);
@@ -58,9 +60,9 @@ public class User extends BaseEntity {
         return list;
     }
 
- */
 
-/*
+
+
     @Override
     public String getUsername() {
         return name;
@@ -91,5 +93,5 @@ public class User extends BaseEntity {
     public boolean isEnabled() {
         return true;
     }
-    */
+
 }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/mainLayout :: layout (~{::body},'signup')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+<!--/*@thymesVar id="user" type="mb.booksy.web.model.UserDto"*/-->
+<form class="form-signup" th:action="@{/signup}" th:object="${user}" method="post" style="max-width: 550px; margin: 0 auto;">
+    <div class="border border-secondary p-7 rounded">
+        <br>
+        <br>
+        <h2 class="form-signin-heading" style="margin-left: 230px">Zaloguj się</h2>
+        <br>
+        <div class="row">
+            <div class="col-md-3 form-group" th:class="${#fields.hasErrors('name')}">
+                <label class="col-sm-3 col-form-label">Login</label>
+                <div class="col-sm-7">
+                    <input th:field="*{name}" class="form-control" type="text" th:errorclass="has-error"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('name')}">
+                        <ul>
+                            <li th:each="err: ${#fields.errors('name')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-3 form-group" th:class="${#fields.hasErrors('email')}">
+                <label class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-7">
+                    <input type="email" class="form-control" th:field="*{email}" th:errorclass="has-error"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('email')}">
+                        <ul>
+                            <li th:each="err: ${#fields.errors('email')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-3 form-group" th:class="${#fields.hasErrors('role')}">
+                <label class="col-sm-3 col-form-label">Rola</label>
+                <div class="col-sm-7">
+                    <select class="form-control selectpicker" th:field="*{role}" id="role">
+                        <option th:each="role : ${T(mb.booksy.security.ApplicationUserRole).values()}" th:value="${role}" th:text="${role}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 20px">
+            <div class="col-md-3 form-group" th:class="${#fields.hasErrors('password')}">
+            <label class="col-sm-3 col-form-label">Hasło</label>
+                <div class="col-sm-7">
+                    <input type="password" class="form-control" th:field="*{password}" th:errorclass="has-error"/>
+                    <span class="help-block" th:if="${#fields.hasErrors('password')}">
+                        <ul>
+                            <li th:each="err: ${#fields.errors('password')}" th:text="${err}"/>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" style="margin-top: 20px">
+            <label class="col-sm-3 col-form-label">Potwierdź hasło</label>
+            <div class="col-sm-7">
+                <input type="password" class="form-control" th:field="*{matchingPassword}"/>
+            </div>
+        </div>
+        <br>
+        <button type="submit" style="margin-left: 255px;border:1px solid black; background-color: #e3e7e6">Zarejestruj</button>
+    </div>
+</form>
+
+</body>
+</html>

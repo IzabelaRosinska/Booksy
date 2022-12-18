@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mb.booksy.domain.order.Order;
-import mb.booksy.domain.user.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -17,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "clients")
-public class Client extends User {
+public class Client extends Person {
 
     @Builder
-    public Client(Long id, String login, String name, String surname, String telephone, String email, String password, String address, String userRole) {
+    public Client(Long id, String login, String name, String surname, String telephone, String email, String password, String address, SimpleGrantedAuthority userRole) {
         super(id, login, name, surname, password, userRole);
         this.telephone = telephone;
         this.email = email;
@@ -36,11 +36,10 @@ public class Client extends User {
     @Column(name = "email")
     private String email;
 
-    @NotEmpty
+
     @Column(name = "address")
     private String address;
 
-    @NotEmpty
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints;
 

@@ -6,14 +6,18 @@ import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.domain.order.cart.ItemInCart;
 import mb.booksy.domain.order.delivery.DeliveryPoint;
 import mb.booksy.domain.order.delivery.InpostBox;
+import mb.booksy.domain.user.Client;
 import mb.booksy.repository.*;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static mb.booksy.security.ApplicationUserRole.CLIENT;
 
 @Slf4j
 @Component
@@ -24,13 +28,17 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final ItemInCartRepository itemInCartRepository;
     private final InpostBoxRepository inpostBoxRepository;
     private final DeliveryPointRepository deliveryPointRepository;
+    private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(CartRepository cartRepository, ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, InpostBoxRepository inpostBoxRepository, DeliveryPointRepository deliveryPointRepository) {
+    public DataLoader(CartRepository cartRepository, ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, InpostBoxRepository inpostBoxRepository, DeliveryPointRepository deliveryPointRepository, ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
         this.cartRepository = cartRepository;
         this.itemRepository = itemRepository;
         this.itemInCartRepository = itemInCartRepository;
         this.inpostBoxRepository = inpostBoxRepository;
         this.deliveryPointRepository = deliveryPointRepository;
+        this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public byte[] createImage(String path) {
@@ -102,6 +110,11 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         deliveryPointRepository.save(DeliveryPoint.builder().id(8L).pointName("Kiosk RUCH").addressName("ul. Kazimierza Wielkiego, 34-112 Kraków").build());
         deliveryPointRepository.save(DeliveryPoint.builder().id(9L).pointName("Kiosk RUCH").addressName("ul. Ziemna 1, 76-433 Legnica").build());
         deliveryPointRepository.save(DeliveryPoint.builder().id(10L).pointName("Kiosk RUCH").addressName("ul. Karmelkowa 76, 54-044 Poznań").build());
+
+        Client clientA = Client.builder().id(1l).name("clientA").email("AC@wp.pl").password(passwordEncoder.encode("passAC")).userRole(CLIENT.getUserRole()).telephone("111111111").build();
+        Client clientB = Client.builder().id(2l).name("clientB").email("BC@wp.pl").password(passwordEncoder.encode("passBC")).userRole(CLIENT.getUserRole()).telephone("222222222").build();
+        clientRepository.save(clientA);
+        clientRepository.save(clientB);
     }
 
 
