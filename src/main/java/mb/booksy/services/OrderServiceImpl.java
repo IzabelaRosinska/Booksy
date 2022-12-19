@@ -6,6 +6,7 @@ import mb.booksy.domain.user.Client;
 import mb.booksy.repository.CartRepository;
 import mb.booksy.repository.OrderRepository;
 import mb.booksy.web.model.PersonDto;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,11 +19,13 @@ public class OrderServiceImpl implements OrderService {
     private final UserAuthenticationService userAuthenticationService;
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserAuthenticationService userAuthenticationService, CartRepository cartRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserAuthenticationService userAuthenticationService, CartRepository cartRepository, PasswordEncoder passwordEncoder) {
         this.orderRepository = orderRepository;
         this.userAuthenticationService = userAuthenticationService;
         this.cartRepository = cartRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,6 +45,15 @@ public class OrderServiceImpl implements OrderService {
         order.setReceiverPhone(person.getPhone());
 
         orderRepository.save(order);
+    }
+
+    @Override
+    public boolean validateLogin(PersonDto personDto) {
+        Client client = (Client)userAuthenticationService.getAuthenticatedUser();
+        if(personDto.getLogin() != null && personDto.getPassword() != null)
+            if(client.getLogin().equals(personDto.getLogin()))
+                return true;
+        return false;
     }
 
     @Override

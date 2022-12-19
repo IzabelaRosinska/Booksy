@@ -185,8 +185,6 @@ public class CartController {
         return "ruch";
     }
 
-    //poprawione
-
     // payment methods
 
     @GetMapping({"/payment", "/payment.html"})
@@ -237,39 +235,51 @@ public class CartController {
         double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
 
-        if(personDto != null)
-            System.out.print(personDto.getLogin());
-
-        return "data";
+        if(personDto != null){
+            if(orderService.validateLogin(personDto))
+                return "redirect:/data";
+            else
+                return "bank";
+        }
+        return "bank";
     }
 
     // payu details
 
     @GetMapping({"/data", "/data.html"})
     public String getPaymentDetails(PaymentDto paymentDto, Model model) {
-
+        paymentDto = paymentService.createPayUPayment(paymentDto);
+        model.addAttribute("paymentDto", paymentDto);
         return "data";
     }
 
     @PostMapping({"/data", "/data.html"})
     public String postData( PaymentDto paymentDto, Model model) {
-        if(paymentDto != null)
-            System.out.print("jest");
-
-        return "orders";
+        if(paymentDto != null) {
+            paymentService.updateOrder(paymentDto);
+            return "redirect:/orders";
+        }
+        return "data";
     }
 
     @GetMapping({"/blik", "/blik.html"})
     public String getBlikDetails(PaymentDto paymentDto, Model model) {
-
+        paymentDto = paymentService.createBlikPayment();
+        model.addAttribute("paymentDto", paymentDto);
         return "blik";
     }
 
     @PostMapping({"/blik", "/blik.html"})
     public String postBlik(PaymentDto paymentDto, Model model) {
-        if(paymentDto != null)
-            System.out.print("jest");
+        if(paymentDto != null) {
+            paymentService.updateOrder(paymentDto);
+            return "redirect:/orders";
+        }
+        return "blik";
+    }
 
+    @GetMapping({"/orders", "/orders.html"})
+    public String getOrders(Model model) {
         return "orders";
     }
 }

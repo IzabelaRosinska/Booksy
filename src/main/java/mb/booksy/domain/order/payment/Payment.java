@@ -21,26 +21,26 @@ import java.util.Set;
 public class Payment extends BaseEntity {
 
     @Builder
-    public Payment(Long id, Float amount) {
+    public Payment(Long id, Double amount) {
         super(id);
         this.amount = amount;
         this.paymentDate = LocalDate.now();
     }
 
-    @NotEmpty
-    @Column(name = "amount")
-    private Float amount;
 
-    @NotEmpty
+    @Column(name = "amount")
+    private Double amount;
+
+
     @Column(name = "payment_date")
     private LocalDate paymentDate;
 
-    @NotNull
+
     @Column(name = "currency")
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
 
-    @NotNull
+
     @Column(name = "payment_type")
     @Enumerated(value = EnumType.STRING)
     private PaymentType paymentType;

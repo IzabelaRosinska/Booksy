@@ -1,18 +1,43 @@
 package mb.booksy.services;
 
+import mb.booksy.domain.order.delivery.Delivery;
 import mb.booksy.domain.order.payment.Payment;
+import mb.booksy.domain.order.payment.PaymentType;
+import mb.booksy.domain.user.Client;
+import mb.booksy.repository.OrderRepository;
+import mb.booksy.repository.Paymentrepository;
+import mb.booksy.web.mapper.PaymentMapper;
+import mb.booksy.web.model.PaymentDto;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
+
+    private final ItemService itemService;
+    private final UserAuthenticationService userAuthenticationService;
+    private final PaymentMapper paymentMapper;
+    private final Paymentrepository paymentRepository;
+    private final OrderRepository orderRepository;
+
+
+    public PaymentServiceImpl(ItemService itemService, UserAuthenticationService userAuthenticationService, PaymentMapper paymentMapper, Paymentrepository paymentrepository, OrderRepository orderRepository) {
+        this.itemService = itemService;
+        this.userAuthenticationService = userAuthenticationService;
+        this.paymentMapper = paymentMapper;
+        this.paymentRepository = paymentrepository;
+        this.orderRepository = orderRepository;
+    }
+
     @Override
     public Set<Payment> findAll() {
         return null;
@@ -71,5 +96,51 @@ public class PaymentServiceImpl implements PaymentService {
             e.printStackTrace();
         }
         return itemPhoto;
+    }
+
+    @Override
+    public PaymentDto createBlikPayment() {
+        Payment payment = Payment.builder().id(getNewId()).build();
+        payment.setPaymentDate(LocalDate.now());
+        payment.setPaymentType(PaymentType.BLIK);
+        payment.setAmount(itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId()));
+        paymentRepository.save(payment);
+        PaymentDto dto = paymentMapper.paymentToPaymentDto(payment);
+        Client user = (Client)userAuthenticationService.getAuthenticatedUser();
+        dto.setRachNadawca(user.getAccount());
+        dto.setOdbiorca("Booksy Sp. z o.o.");
+        dto.setRachOdbiorca("57 1111 2222 3333 4444 5555 6666");
+        return dto;
+    }
+
+    @Transactional
+    @Override
+    public void updateOrder(PaymentDto paymentDto) {
+        Client user = (Client)userAuthenticationService.getAuthenticatedUser();
+        Long orderId = orderRepository.getOrderId(user.getId()).get(0).getId();
+        orderRepository.savePayment(paymentDto.getId(), orderId);
+    }
+
+    @Override
+    public PaymentDto createPayUPayment(PaymentDto paymentDto) {
+        Payment payment = Payment.builder().id(getNewId()).build();
+        payment.setPaymentDate(LocalDate.now());
+        payment.setPaymentType(PaymentType.PAYU);
+        payment.setAmount(itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId()));
+        paymentRepository.save(payment);
+        PaymentDto dto = paymentMapper.paymentToPaymentDto(payment);
+        Client user = (Client)userAuthenticationService.getAuthenticatedUser();
+        dto.setRachNadawca(user.getAccount());
+        dto.setOdbiorca("Booksy Sp. z o.o.");
+        dto.setRachOdbiorca("57 1111 2222 3333 4444 5555 6666");
+        return dto;
+    }
+
+    private Long getNewId() {
+        List<Delivery> deliveries = paymentRepository.findLastIndex();
+        Long lastId = 1L;
+        if(deliveries.size() != 0)
+            lastId = deliveries.get(0).getId() + 1;
+        return lastId;
     }
 }

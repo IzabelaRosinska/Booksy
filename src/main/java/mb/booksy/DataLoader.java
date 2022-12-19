@@ -111,8 +111,8 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         deliveryPointRepository.save(DeliveryPoint.builder().id(9L).pointName("Kiosk RUCH").addressName("ul. Ziemna 1, 76-433 Legnica").build());
         deliveryPointRepository.save(DeliveryPoint.builder().id(10L).pointName("Kiosk RUCH").addressName("ul. Karmelkowa 76, 54-044 Poznań").build());
 
-        Client clientA = Client.builder().id(1l).name("clientA").email("AC@wp.pl").password(passwordEncoder.encode("passAC")).userRole(CLIENT.getUserRole()).telephone("111111111").build();
-        Client clientB = Client.builder().id(2l).name("clientB").email("BC@wp.pl").password(passwordEncoder.encode("passBC")).userRole(CLIENT.getUserRole()).telephone("222222222").build();
+        Client clientA = Client.builder().id(1l).name("clientA").email("AC@wp.pl").login("AC").account("11 1111 1111 1111 1111 1111 1111").password(passwordEncoder.encode("passAC")).userRole(CLIENT.getUserRole()).telephone("111111111").build();
+        Client clientB = Client.builder().id(2l).name("clientB").email("BC@wp.pl").login("BC").account("22 2222 2222 2222 2222 2222 2222").password(passwordEncoder.encode("passBC")).userRole(CLIENT.getUserRole()).telephone("222222222").build();
         clientRepository.save(clientA);
         clientRepository.save(clientB);
     }

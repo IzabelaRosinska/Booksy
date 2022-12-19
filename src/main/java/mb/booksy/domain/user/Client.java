@@ -20,11 +20,12 @@ import java.util.List;
 public class Client extends Person {
 
     @Builder
-    public Client(Long id, String login, String name, String surname, String telephone, String email, String password, String address, SimpleGrantedAuthority userRole) {
+    public Client(Long id, String login, String name, String surname, String telephone, String email, String account, String password, String address, SimpleGrantedAuthority userRole) {
         super(id, login, name, surname, password, userRole);
         this.telephone = telephone;
         this.email = email;
         this.address = address;
+        this.account = account;
         this.loyaltyPoints = 0;
     }
 
@@ -36,6 +37,9 @@ public class Client extends Person {
     @Column(name = "email")
     private String email;
 
+    @NotEmpty
+    @Column(name = "account")
+    private String account;
 
     @Column(name = "address")
     private String address;

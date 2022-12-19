@@ -7,4 +7,5 @@ public interface OrderService extends BaseService<Order, Long> {
 
     void saveOrder(PersonDto person);
 
+    boolean validateLogin(PersonDto personDto);
 }
