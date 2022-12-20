@@ -28,11 +28,23 @@ public class Complaint extends BaseEntity {
     @Column(name = "reason_complaint")
     private String reasonComplaint;
 
+    @NotBlank
     @NotEmpty
+    @Column(name = "method_complaint")
+    private String methodComplaint;
+
+    @Column(name = "item_id")
+    private Long itemId;
+
+    @Column(name = "extra")
+    private String extraInformation;
+
+    @Column(name = "acceptance")
+    private Boolean acceptance;
+
     @Column(name = "init_date")
     private LocalDate initDate;
 
-    @NotEmpty
     @Column(name = "process_date")
     private LocalDate processDate;
 

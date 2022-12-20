@@ -4,7 +4,9 @@ package mb.booksy.services;
 import mb.booksy.domain.inventory.Item;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
+import mb.booksy.repository.OrderRepository;
 import mb.booksy.web.mapper.ItemMapper;
+import mb.booksy.web.mapper.OrderMapper;
 import mb.booksy.web.model.ItemDto;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.mapstruct.factory.Mappers;
@@ -25,12 +27,16 @@ public class ItemServiceImpl implements ItemService {
 
 
     private final ItemRepository itemRepository;
+    private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
     private final ItemInCartRepository itemInCartRepository;
     private ItemMapper mapper;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, ItemMapper mapper) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, OrderRepository orderRepository, OrderMapper orderMapper, ItemMapper mapper) {
         this.itemRepository = itemRepository;
         this.itemInCartRepository = itemInCartRepository;
+        this.orderRepository = orderRepository;
+        this.orderMapper = orderMapper;
         this.mapper = mapper;
     }
 
@@ -92,6 +98,16 @@ public class ItemServiceImpl implements ItemService {
         images.add(createImage("src/main/resources/static/resources/images/zabka.jpg"));
         images.add(createImage("src/main/resources/static/resources/images/ruch.jpg"));
         return images;
+    }
+
+    @Override
+    public List<ItemDto> findAllOrderItem(String orderId, Long cartId) {
+        List<ItemDto> itemsInOrder = itemRepository.findAllInOrder(orderId)
+                .stream()
+                .map(item -> getItemDetails(mapper.itemToItemDto(item), cartId))
+                .collect(Collectors.toList());
+
+        return itemsInOrder;
     }
 
     public String createImage(String path) {

@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'cart')}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'orders')}">
 <head>
     <meta charset="UTF-8">
-    <title>Orders</title>
+    <title>Cart</title>
 </head>
 <body>
-<!--/*@thymesVar id="paymentDto" type="mb.booksy.web.model.PaymentDto"*/-->
-<div class="form group row">
-    <div class="form-group col-md-6">
-
-
+<!--/*@thymesVar id="orderDto" type="mb.booksy.web.model.OrderDto"*/-->
+<br>
+<div class="formgroup row">
+    <div class="form-group col-md-8">
+        <h1>Zamówienia</h1>
+        <table id="find_shortest_terms" class="table table-striped" style="margin-top: 20px; width: 760px">
+            <thead>
+            <tr>
+                <th style="width: 50px;vertical-align: middle;text-align: left">Numer</th>
+                <th style="width: 120px;vertical-align: middle">Data</th>
+                <th style="width: 70px;vertical-align: middle">Produkty</th>
+                <th style="width: 40px;margin-left: 10px;vertical-align: middle">Kwota</th>
+                <th style="width: 40px;margin-left: 10px;vertical-align: middle"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderDto : ${selections}">
+                <td th:text="${orderDto.id}" style="text-align: left;vertical-align: middle"></td>
+                <td th:text="${orderDto.date}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${orderDto.productNumber} + ' szt.'" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${orderDto.amount}  + ' PLN'" style="text-align: left;vertical-align: middle"/>
+                <td style="text-align: center;vertical-align: middle"><a th:href="@{/order/(orderId=${orderDto.id})}"><span class="glyphicon glyphicon-search"></span></a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-
 </div>
 </body>
 </html>

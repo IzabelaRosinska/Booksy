@@ -35,9 +35,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .addFilterBefore(new JwtTokenVerifier(secretKey), BasicAuthenticationFilter.class)
 
                     .authorizeRequests()
-                    .antMatchers("/**").hasRole("CLIENT")
-                    .antMatchers("/fragments/**").hasAnyRole("CLIENT")
-                    .antMatchers("/cancel/**").hasAnyRole("CLIENT")
+                    .antMatchers("/**").permitAll()
+                    .antMatchers("/fragments/**").permitAll()
                     .antMatchers("/home").permitAll()
                     .antMatchers("/signup").permitAll()
 

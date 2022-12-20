@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'account')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Account</title>
+</head>
+<body>
+<!--/*@thymesVar id="complaintDto" type="mb.booksy.web.model.ComplaintDto"*/-->
+<br>
+<div class="formgroup row">
+    <div class="form-group col-md-12">
+        <h1>Moje Reklamacje</h1>
+        <table id="find_shortest_terms" class="table table-striped" style="margin-top: 20px; width: 1500px">
+            <thead>
+            <tr>
+                <th style="width: 120px;vertical-align: middle;text-align: left">Nr reklamacji</th>
+                <th style="width: 120px;vertical-align: middle">Nr zamówienia</th>
+                <th style="width: 140px;vertical-align: middle">Data reklamacji</th>
+                <th style="width: 220px;margin-left: 10px;vertical-align: middle">Nazwa produktu</th>
+                <th style="width: 200px;margin-left: 10px;vertical-align: middle">Powód</th>
+                <th style="width: 200px;margin-left: 10px;vertical-align: middle">Rozwiązanie</th>
+                <th style="width: 80px;margin-left: 10px;vertical-align: middle">Akcpetacja</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="complaintDto : ${selections}">
+                <td th:text="${complaintDto.compId}" style="text-align: left;vertical-align: middle"></td>
+                <td th:text="${complaintDto.orderId}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${complaintDto.initDate}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${complaintDto.compItemName}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${complaintDto.compReason}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${complaintDto.compMethod}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${complaintDto.acceptance}" style="text-align: left;vertical-align: middle"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

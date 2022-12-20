@@ -3,9 +3,13 @@ package mb.booksy.services;
 import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
+import mb.booksy.web.model.MethodDto;
 import mb.booksy.web.model.PersonDto;
+import mb.booksy.web.model.ReasonDto;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -58,5 +62,24 @@ public class CartServiceImpl implements CartService {
             itemInCartRepository.updateItemNumber(new_number, cartId, itemId);
             return "";
         }
+    }
+
+    @Override
+    public List<ReasonDto> getComplaintReasons() {
+        List<ReasonDto> reasons = new ArrayList<>();
+        reasons.add(new ReasonDto(1L, "Uszkodzenie produktu"));
+        reasons.add(new ReasonDto(2L, "Niewłaściwy produkt"));
+        reasons.add(new ReasonDto(3L, "Niekompletność opakowania"));
+        reasons.add(new ReasonDto(4L, "Inny powód"));
+        return reasons;
+    }
+
+    @Override
+    public List<MethodDto> getComplaintMethods() {
+        List<MethodDto> methods = new ArrayList<>();
+        methods.add(new MethodDto(1L, "Zwrot pieniędzy"));
+        methods.add(new MethodDto(2L, "Wymiana poduktu"));
+        methods.add(new MethodDto(3L, "Naprawa"));
+        return methods;
     }
 }

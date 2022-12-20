@@ -8,6 +8,7 @@ import mb.booksy.domain.order.payment.Payment;
 import mb.booksy.domain.user.Client;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,9 @@ public class Order extends BaseEntity {
 
     @Column(name = "czy_zakonczone")
     private Boolean czyZakonczone;
+
+    @Column(name = "order_date")
+    private LocalDate orderDate;
 
     @Column(name = "receiver_name")
     private String receiverName;

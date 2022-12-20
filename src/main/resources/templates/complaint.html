@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'orders')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body>
+<!--/*@thymesVar id="complaintDto" type="mb.booksy.web.model.ComplaintDto"*/-->
+<!--/*@thymesVar id="orderDto" type="mb.booksy.web.model.OrderDto"*/-->
+<br>
+<div class="formgroup row">
+    <div class="form-group col-md-8">
+        <h1>Zgłoszenie reklamacji</h1>
+        <br>
+
+        <form th:object="${complaintDto}" th:action="@{/complaint/(orderId=${orderId})}" method="post" class="form-horizontal">
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="Wybierz produkt" class="col-sm-3 col-form-label" style="margin-left: 0px">Wybierz produkt</label>
+                <div class="form-group col-md-5">
+                    <div class="form-group blu-margin">
+                        <select class="form-control" th:field="*{compItem}"  id="Wybierz produkt" style="margin-left: 20px">
+                            <option value="0">Nazwa produktu</option>
+                            <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.itemName}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin-top: 5px">
+                <label for="Wybierz powod" class="col-sm-3 col-form-label" style="margin-left: 0px">Wybierz powód</label>
+                <div class="form-group col-md-5">
+                    <div class="form-group blu-margin">
+                        <select class="form-control" th:field="*{compReason}"  id="Wybierz powod" style="margin-left: 20px">
+                            <option value="0">Powód reklamacji</option>
+                            <option th:each="reason : ${reasons}" th:value="${reason.name}" th:text="${reason.name}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin-top: 5px">
+                <label for="rozwiazanie" class="col-sm-3 col-form-label" style="margin-left: 0px">Wybierz rozwiązanie</label>
+                <div class="form-group col-md-5">
+                    <div class="form-group blu-margin">
+                        <select class="form-control" th:field="*{compMethod}"  id="rozwiazanie" style="margin-left: 20px">
+                            <option value="0">Preferowane rozwiązanie</option>
+                            <option th:each="method : ${methods}" th:value="${method.name}" th:text="${method.name}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row" style="margin-top: 5px">
+                <label for="uwagi" class="col-sm-3 col-form-label" style="margin-left: 0px">Uwagi</label>
+                <div class="form-group col-md-5">
+                    <input size="100" type="text" class="form-control" id="uwagi" th:field="*{extraInformation}">
+                </div>
+            </div>
+
+            <div class="row">
+                <br>
+                <button class="btn btn-primary" style="width: 90px;margin-top:10px;margin-left: 250px; background-color: #4682B4;color:white" type="submit">Zapisz</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

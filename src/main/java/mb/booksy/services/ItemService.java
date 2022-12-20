@@ -14,4 +14,5 @@ public interface ItemService extends BaseService<Item, Long> {
 
     List<String> findDeliveryImage();
 
+    List<ItemDto> findAllOrderItem(String orderId, Long cartId);
 }

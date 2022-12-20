@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface Paymentrepository extends CrudRepository<Payment, Long> {
+public interface PaymentRepository extends CrudRepository<Payment, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM payments ORDER BY id DESC")
     List<Delivery> findLastIndex();

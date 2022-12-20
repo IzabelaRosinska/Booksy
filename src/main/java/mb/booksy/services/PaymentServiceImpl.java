@@ -5,7 +5,7 @@ import mb.booksy.domain.order.payment.Payment;
 import mb.booksy.domain.order.payment.PaymentType;
 import mb.booksy.domain.user.Client;
 import mb.booksy.repository.OrderRepository;
-import mb.booksy.repository.Paymentrepository;
+import mb.booksy.repository.PaymentRepository;
 import mb.booksy.web.mapper.PaymentMapper;
 import mb.booksy.web.model.PaymentDto;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -26,11 +26,11 @@ public class PaymentServiceImpl implements PaymentService {
     private final ItemService itemService;
     private final UserAuthenticationService userAuthenticationService;
     private final PaymentMapper paymentMapper;
-    private final Paymentrepository paymentRepository;
+    private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
 
 
-    public PaymentServiceImpl(ItemService itemService, UserAuthenticationService userAuthenticationService, PaymentMapper paymentMapper, Paymentrepository paymentrepository, OrderRepository orderRepository) {
+    public PaymentServiceImpl(ItemService itemService, UserAuthenticationService userAuthenticationService, PaymentMapper paymentMapper, PaymentRepository paymentrepository, OrderRepository orderRepository) {
         this.itemService = itemService;
         this.userAuthenticationService = userAuthenticationService;
         this.paymentMapper = paymentMapper;
