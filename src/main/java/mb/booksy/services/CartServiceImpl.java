@@ -4,7 +4,6 @@ import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
 import mb.booksy.web.model.MethodDto;
-import mb.booksy.web.model.PersonDto;
 import mb.booksy.web.model.ReasonDto;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -24,42 +23,21 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Set<Cart> findAll() {
-        return null;
-    }
-
-    @Override
-    public Cart findById(Long aLong) {
-        return null;
-    }
-
-    @Override
-    public Cart save(Cart object) {
-        return null;
-    }
-
-    @Override
-    public void delete(Cart object) {}
-
-    @Override
-    public void deleteById(Long aLong) {}
-
     @Transactional
-    @Override
     public void deleteItemFromCart(Long cartId, Long itemId) {
         itemInCartRepository.deleteItemInCart(cartId, itemId);
     }
 
-    @Transactional
     @Override
-    public String updateItemNumber(Long cartId, Long itemId, Integer new_number) {
+    @Transactional
+    public String updateItemNumber(Long cartId, Long itemId, Integer newNumber) {
         Integer maxNumber = itemRepository.findById(itemId).get().getAvailability();
-        if(new_number > maxNumber)
+        if(newNumber > maxNumber)
             return "Liczba dostępnych sztuk - " + maxNumber;
-        else if(new_number < 1)
+        else if(newNumber < 1)
             return "Liczba sztuk musi być większa od 0";
         else {
-            itemInCartRepository.updateItemNumber(new_number, cartId, itemId);
+            itemInCartRepository.updateItemNumber(newNumber, cartId, itemId);
             return "";
         }
     }
@@ -82,4 +60,25 @@ public class CartServiceImpl implements CartService {
         methods.add(new MethodDto(3L, "Naprawa"));
         return methods;
     }
+
+    @Override
+    public Set<Cart> findAll() {
+        return null;
+    }
+
+    @Override
+    public Cart findById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public Cart save(Cart object) {
+        return null;
+    }
+
+    @Override
+    public void delete(Cart object) {}
+
+    @Override
+    public void deleteById(Long aLong) {}
 }

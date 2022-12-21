@@ -9,9 +9,7 @@ import mb.booksy.domain.user.Client;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,10 +19,13 @@ import java.util.Set;
 public class Order extends BaseEntity {
 
     @Builder
-    public Order(Long id, Boolean czyPrawidlowe, Boolean czyZakonczone) {
+    public Order(Long id, Boolean czyPrawidlowe, Boolean czyZakonczone, LocalDate orderDate, Client client, Cart cart) {
         super(id);
         this.czyPrawidlowe = czyPrawidlowe;
         this.czyZakonczone = czyZakonczone;
+        this.orderDate = orderDate;
+        this.client = client;
+        this.cart = cart;
     }
 
     @Column(name = "czy_prawidlowe")

@@ -1,6 +1,5 @@
 package mb.booksy.repository;
 
-import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.domain.user.Client;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

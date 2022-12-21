@@ -15,6 +15,15 @@ import javax.persistence.*;
 public class Delivery extends BaseEntity {
 
     @Builder
+    public Delivery(Long id, DeliveryCompany deliveryCompany, InpostDelivery inpostDelivery, CourierDelivery courierDelivery, PointDelivery pointDelivery) {
+        super(id);
+        this.deliveryCompany = deliveryCompany;
+        this.inpostDelivery = inpostDelivery;
+        this.courierDelivery = courierDelivery;
+        this.pointDelivery = pointDelivery;
+    }
+
+    @Builder
     public Delivery(Long id) {
         super(id);
     }

@@ -6,12 +6,8 @@ import lombok.NoArgsConstructor;
 import mb.booksy.domain.BaseEntity;
 import mb.booksy.domain.order.Order;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -21,12 +17,13 @@ import java.util.Set;
 public class Payment extends BaseEntity {
 
     @Builder
-    public Payment(Long id, Double amount) {
+    public Payment(Long id, Double amount, LocalDate paymentDate, PaymentType paymentType, Currency currency) {
         super(id);
         this.amount = amount;
-        this.paymentDate = LocalDate.now();
+        this.paymentDate = paymentDate;
+        this.paymentType = paymentType;
+        this.currency = currency;
     }
-
 
     @Column(name = "amount")
     private Double amount;

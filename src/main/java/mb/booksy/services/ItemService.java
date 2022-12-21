@@ -6,13 +6,11 @@ import java.util.List;
 
 public interface ItemService extends BaseService<Item, Long> {
 
-    List<ItemDto> findAllCartItem(Long cartId);
-
     Double countPrice(Long cartId);
-
     Double countDiscount(Long cartId);
 
     List<String> findDeliveryImage();
 
+    List<ItemDto> findAllCartItem(Long cartId);
     List<ItemDto> findAllOrderItem(String orderId, Long cartId);
 }

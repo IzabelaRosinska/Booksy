@@ -1,17 +1,12 @@
 package mb.booksy.services;
 
-
 import mb.booksy.domain.inventory.Item;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
-import mb.booksy.repository.OrderRepository;
 import mb.booksy.web.mapper.ItemMapper;
-import mb.booksy.web.mapper.OrderMapper;
 import mb.booksy.web.model.ItemDto;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,19 +20,14 @@ import java.util.stream.Collectors;
 @Service
 public class ItemServiceImpl implements ItemService {
 
-
     private final ItemRepository itemRepository;
-    private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
     private final ItemInCartRepository itemInCartRepository;
-    private ItemMapper mapper;
+    private ItemMapper itemMapper;
 
-    public ItemServiceImpl(ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, OrderRepository orderRepository, OrderMapper orderMapper, ItemMapper mapper) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemInCartRepository itemInCartRepository, ItemMapper itemMapper) {
         this.itemRepository = itemRepository;
         this.itemInCartRepository = itemInCartRepository;
-        this.orderRepository = orderRepository;
-        this.orderMapper = orderMapper;
-        this.mapper = mapper;
+        this.itemMapper = itemMapper;
     }
 
     @Override
@@ -51,40 +41,35 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDto> findAllCartItem(Long cartId) {
         List<ItemDto> itemsInCart = itemRepository.findAllInCart(cartId)
                 .stream()
-                .map(item -> getItemDetails(mapper.itemToItemDto(item), cartId))
+                .map(item -> getItemDetails(itemMapper.itemToItemDto(item), cartId))
                 .collect(Collectors.toList());
 
         return itemsInCart;
     }
 
-    private ItemDto getItemDetails(ItemDto item, Long cartId){
+    private ItemDto getItemDetails(ItemDto itemDto, Long cartId){
         String itemPhoto = "";
         try{
-            itemPhoto = new String(Base64.encodeBase64(itemRepository.findById(item.getId()).get().getItemImage()), "UTF-8");
+            itemPhoto = new String(Base64.encodeBase64(itemRepository.findById(itemDto.getId()).get().getItemImage()), "UTF-8");
         }catch(IOException e) {
             e.printStackTrace();
         }
-        item.setImage(itemPhoto);
-        int amount = itemInCartRepository.findItemInCart(item.getId(), cartId).get(0).getNumber();
-        double price = amount * itemRepository.findById(item.getId()).get().getPrice();
-        item.setCartAmount(amount);
-        item.setCartPrice(price);
-        return item;
+        itemDto.setImage(itemPhoto);
+        int amount = itemInCartRepository.findItemInCart(itemDto.getId(), cartId).get(0).getNumber();
+        double price = amount * itemRepository.findById(itemDto.getId()).get().getPrice();
+        itemDto.setCartAmount(amount);
+        itemDto.setCartPrice(price);
+        return itemDto;
     }
 
     @Override
     public Double countPrice(Long cartId) {
-        double price = 0;
-        List<ItemDto> items = findAllCartItem(cartId);
-        for(ItemDto item: items) {
-            price += item.getCartPrice();
-        }
-        return price;
+        return itemInCartRepository.countCartPrice(cartId);
     }
 
     @Override
     public Double countDiscount(Long cartId) {
-        double newPrice = countPrice(cartId) * 90;
+        double newPrice = itemInCartRepository.countCartDiscount(cartId);
         newPrice = Math.round(newPrice);
         newPrice /= 100;
         return newPrice;
@@ -100,17 +85,7 @@ public class ItemServiceImpl implements ItemService {
         return images;
     }
 
-    @Override
-    public List<ItemDto> findAllOrderItem(String orderId, Long cartId) {
-        List<ItemDto> itemsInOrder = itemRepository.findAllInOrder(orderId)
-                .stream()
-                .map(item -> getItemDetails(mapper.itemToItemDto(item), cartId))
-                .collect(Collectors.toList());
-
-        return itemsInOrder;
-    }
-
-    public String createImage(String path) {
+    private String createImage(String path) {
         byte[] array = null;
         String itemPhoto = "";
         try {
@@ -120,6 +95,16 @@ public class ItemServiceImpl implements ItemService {
             e.printStackTrace();
         }
         return itemPhoto;
+    }
+
+    @Override
+    public List<ItemDto> findAllOrderItem(String orderId, Long cartId) {
+        List<ItemDto> itemsInOrder = itemRepository.findAllInOrder(orderId)
+                .stream()
+                .map(item -> getItemDetails(itemMapper.itemToItemDto(item), cartId))
+                .collect(Collectors.toList());
+
+        return itemsInOrder;
     }
 
     @Override
@@ -133,7 +118,6 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.save(item);
     }
 
-
     @Override
     public void delete(Item item) {
         itemRepository.delete(item);
@@ -143,6 +127,4 @@ public class ItemServiceImpl implements ItemService {
     public void deleteById(Long itemId) {
         itemRepository.deleteById(itemId);
     }
-
-
 }

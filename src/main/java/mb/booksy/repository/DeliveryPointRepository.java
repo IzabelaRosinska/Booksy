@@ -11,4 +11,7 @@ public interface DeliveryPointRepository extends CrudRepository<DeliveryPoint, L
 
     @Query(nativeQuery = true, value = "SELECT * FROM delivery_points")
     List<DeliveryPoint> findAll();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM delivery_points WHERE id = ?1")
+    DeliveryPoint findByPointId(Long pointId);
 }

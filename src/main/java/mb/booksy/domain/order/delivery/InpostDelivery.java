@@ -17,8 +17,9 @@ import java.util.Set;
 public class InpostDelivery extends BaseEntity {
 
     @Builder
-    public InpostDelivery(Long id) {
+    public InpostDelivery(Long id, InpostBox inpostBox) {
         super(id);
+        this.inpostBox = inpostBox;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

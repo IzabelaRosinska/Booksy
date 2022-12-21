@@ -17,8 +17,9 @@ import java.util.Set;
 public class PointDelivery extends BaseEntity {
 
     @Builder
-    public PointDelivery(Long id) {
+    public PointDelivery(Long id, DeliveryPoint deliveryPoint) {
         super(id);
+        this.deliveryPoint = deliveryPoint;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

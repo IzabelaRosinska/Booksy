@@ -11,6 +11,7 @@ public interface DeliveryService extends BaseService<Delivery, Long> {
     void saveInpostDelivery(InpostBoxDto inpostBoxDto);
     void saveCourierDelivery(CourierDeliveryDto courierDeliveryDto);
     void savePointDelivery(DeliveryPointDto deliveryPointDto);
+
     List<InpostBoxDto> getAllInpostBoxes();
     List<DeliveryPointDto> getAllZabkaPoints();
     List<DeliveryPointDto> getAllRuchPoints();

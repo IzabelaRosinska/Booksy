@@ -1,6 +1,5 @@
 package mb.booksy.services;
 
-
 import mb.booksy.domain.user.Client;
 import mb.booksy.domain.user.Person;
 import mb.booksy.exceptions.UserAlreadyExistException;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.security.auth.message.AuthException;
 
 import static mb.booksy.security.ApplicationUserRole.CLIENT;
 
