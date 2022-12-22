@@ -59,7 +59,7 @@ public class DeliveryController {
         setCartSummaryParameters(model);
         if(inpostBoxDto != null) {
             deliveryService.saveInpostDelivery(inpostBoxDto);
-            return "redirect:/payment";
+            return "redirect:/points";
         }
         return "inpost";
     }
@@ -78,7 +78,7 @@ public class DeliveryController {
 
         if(courierDeliveryDto != null) {
             deliveryService.saveCourierDelivery(courierDeliveryDto);
-            return "redirect:/payment";
+            return "redirect:/points";
         }
         return "courier";
     }
@@ -101,7 +101,7 @@ public class DeliveryController {
 
         if(deliveryPointDto != null) {
             deliveryService.savePointDelivery(deliveryPointDto);
-            return "redirect:/payment";
+            return "redirect:/points";
         }
         return "zabka";
     }
@@ -124,7 +124,7 @@ public class DeliveryController {
 
         if(deliveryPointDto != null) {
             deliveryService.savePointDelivery(deliveryPointDto);
-            return "redirect:/payment";
+            return "redirect:/points";
         }
         return "ruch";
     }

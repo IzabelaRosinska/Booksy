@@ -96,7 +96,7 @@ public class ItemServiceImpl implements ItemService {
     public Double countPrice() {
         Long id = getCurrentCartId();
         if(id != -1L && cartRepository.findCartSize(id) != 0)
-            return itemInCartRepository.countCartPrice(id);
+            return (itemInCartRepository.countCartPrice(id) - cartRepository.findByCartId(id).getPoints());
         return 0.0;
     }
 
@@ -107,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
             double newPrice = itemInCartRepository.countCartDiscount(id);
             newPrice = Math.round(newPrice);
             newPrice /= 100;
-            return newPrice;
+            return (newPrice - cartRepository.findByCartId(id).getPoints());
         } else {
             return 0.0;
         }

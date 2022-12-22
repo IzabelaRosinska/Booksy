@@ -24,6 +24,7 @@ public class Cart extends BaseEntity {
         this.initDate = initDate;
         this.itemNumber = itemNumber;
         this.client = client;
+        this.points = 0;
     }
 
     @Column(name = "init_date")
@@ -31,6 +32,9 @@ public class Cart extends BaseEntity {
 
     @Column(name = "item_number")
     private Integer itemNumber;
+
+    @Column(name = "loyalty_points")
+    private Integer points;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
     private Set<ItemInCart> itemsCart = new HashSet<>();

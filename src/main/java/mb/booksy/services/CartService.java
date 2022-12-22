@@ -14,4 +14,8 @@ public interface CartService  extends BaseService<Cart, Long> {
     List<ReasonDto> getComplaintReasons();
 
     List<MethodDto> getComplaintMethods();
+
+    Integer getPoints();
+
+    void addPoints();
 }

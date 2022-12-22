@@ -23,13 +23,13 @@ import java.util.Set;
 public class Client extends Person {
 
     @Builder
-    public Client(Long id, String login, String name, String surname, String telephone, String email, String account, String password, String address, SimpleGrantedAuthority userRole) {
+    public Client(Long id, String login, String name, String surname, String telephone, String email, String account, String password, String address, SimpleGrantedAuthority userRole, Integer loyaltyPoints) {
         super(id, login, name, surname, password, userRole);
         this.telephone = telephone;
         this.email = email;
         this.address = address;
         this.account = account;
-        this.loyaltyPoints = 0;
+        this.loyaltyPoints = loyaltyPoints;
     }
 
     @NotEmpty

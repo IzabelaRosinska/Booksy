@@ -33,6 +33,20 @@ public class CartController {
         return "cart";
     }
 
+    @GetMapping({"/points", "/points.html"})
+    public String getPoints(Model model) {
+        model.addAttribute("points", cartService.getPoints());
+        model.addAttribute("desc", "Cena produktów: " + itemService.countPrice() + " PLN");
+
+        return "points";
+    }
+
+    @GetMapping({"/points/add", "/points/add.html"})
+    public String addPoints(Model model) {
+        cartService.addPoints();
+        return "redirect:/payment";
+    }
+
     // cart modification
 
     @GetMapping({"/cart/delete", "/cart/delete.html"})

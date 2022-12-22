@@ -70,8 +70,8 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         itemRepository.save(item4);
         itemRepository.save(item5);
 
-        Client clientA = Client.builder().id(1l).name("clientA").email("AC@wp.pl").login("AC").account("11 1111 1111 1111 1111 1111 1111").password(passwordEncoder.encode("passAC")).userRole(CLIENT.getUserRole()).telephone("111111111").build();
-        Client clientB = Client.builder().id(2l).name("clientB").email("BC@wp.pl").login("BC").account("22 2222 2222 2222 2222 2222 2222").password(passwordEncoder.encode("passBC")).userRole(CLIENT.getUserRole()).telephone("222222222").build();
+        Client clientA = Client.builder().id(1l).name("clientA").email("AC@wp.pl").login("AC").account("11 1111 1111 1111 1111 1111 1111").password(passwordEncoder.encode("passAC")).userRole(CLIENT.getUserRole()).telephone("111111111").loyaltyPoints(43).build();
+        Client clientB = Client.builder().id(2l).name("clientB").email("BC@wp.pl").login("BC").account("22 2222 2222 2222 2222 2222 2222").password(passwordEncoder.encode("passBC")).userRole(CLIENT.getUserRole()).telephone("222222222").loyaltyPoints(11).build();
         clientRepository.save(clientA);
         clientRepository.save(clientB);
 
@@ -90,20 +90,6 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         orderRepository.save(order1);
         orderRepository.save(order2);
         orderRepository.save(order3);
-/*
-        cart2 = cartRepository.findByCartId(2L);
-        cart2.setOrder(order1);
-        cartRepository.save(cart2);
-
-        cart3 = cartRepository.findByCartId(3L);
-        cart3.setOrder(order2);
-        cartRepository.save(cart3);
-
-        cart4 = cartRepository.findByCartId(4L);
-        cart4.setOrder(order3);
-        cartRepository.save(cart4);
-
- */
 
         itemInCartRepository.save(new ItemInCart(1L, 2, item1, cart1));
         itemInCartRepository.save(new ItemInCart(2L, 1, item2, cart1));

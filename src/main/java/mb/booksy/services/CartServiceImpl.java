@@ -1,6 +1,9 @@
 package mb.booksy.services;
 
 import mb.booksy.domain.order.cart.Cart;
+import mb.booksy.domain.user.Client;
+import mb.booksy.repository.CartRepository;
+import mb.booksy.repository.ClientRepository;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
 import mb.booksy.web.model.MethodDto;
@@ -16,12 +19,18 @@ public class CartServiceImpl implements CartService {
 
     private final ItemInCartRepository itemInCartRepository;
     private final ItemRepository itemRepository;
+    private final CartRepository cartRepository;
     private final ItemService itemService;
+    private final UserAuthenticationService userAuthenticationService;
+    private final ClientRepository clientRepository;
 
-    public CartServiceImpl(ItemInCartRepository itemInCartRepository, ItemRepository itemRepository, ItemService itemService) {
+    public CartServiceImpl(ItemInCartRepository itemInCartRepository, ItemRepository itemRepository, CartRepository cartRepository, ItemService itemService, UserAuthenticationService userAuthenticationService, ClientRepository clientRepository) {
         this.itemInCartRepository = itemInCartRepository;
         this.itemRepository = itemRepository;
+        this.cartRepository = cartRepository;
         this.itemService = itemService;
+        this.userAuthenticationService = userAuthenticationService;
+        this.clientRepository = clientRepository;
     }
 
     @Override
@@ -61,6 +70,24 @@ public class CartServiceImpl implements CartService {
         methods.add(new MethodDto(2L, "Wymiana poduktu"));
         methods.add(new MethodDto(3L, "Naprawa"));
         return methods;
+    }
+
+    @Override
+    public Integer getPoints() {
+        return ((Client)userAuthenticationService.getAuthenticatedUser()).getLoyaltyPoints();
+    }
+
+    @Override
+    @Transactional
+    public void addPoints() {
+        Long cartId = itemService.getCurrentCartId();
+        Cart cart = cartRepository.findByCartId(cartId);
+        Client client = (Client)userAuthenticationService.getAuthenticatedUser();
+        Integer points = client.getLoyaltyPoints();
+        cart.setPoints(points);
+        client.setLoyaltyPoints(0);
+        cartRepository.save(cart);
+        clientRepository.save(client);
     }
 
     @Override
