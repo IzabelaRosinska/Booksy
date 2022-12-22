@@ -3,11 +3,9 @@ package mb.booksy.domain.inventory;
 import lombok.*;
 import mb.booksy.domain.BaseEntity;
 import mb.booksy.domain.order.cart.ItemInCart;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Getter

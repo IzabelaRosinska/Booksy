@@ -27,12 +27,16 @@ public class PaymentController {
         this.userAuthenticationService = userAuthenticationService;
     }
 
+    private void setCartSummaryParameters(Model model) {
+        double price = itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId());
+        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+    }
+
     // payment methods
 
     @GetMapping({"/payment", "/payment.html"})
     public String getPaymentMethods(Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
-        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+        setCartSummaryParameters(model);
 
         List<String> results = paymentService.findPaymentImage();
         model.addAttribute("d1", results.get(0));
@@ -45,8 +49,7 @@ public class PaymentController {
 
     @GetMapping({"/payu", "/payu.html"})
     public String getBanks(Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
-        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+        setCartSummaryParameters(model);
 
         List<String> results = paymentService.findBankImage();
         model.addAttribute("d1", results.get(0));
@@ -66,16 +69,14 @@ public class PaymentController {
 
     @GetMapping({"/bank", "/bank.html"})
     public String getBankLogin(PersonDto personDto, Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
-        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+        setCartSummaryParameters(model);
 
         return "bank";
     }
 
     @PostMapping({"/bank", "/bank.html"})
     public String postBankLogin(PersonDto personDto, Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
-        model.addAttribute("desc", "Cena produktów: " + price + " PLN");
+        setCartSummaryParameters(model);
 
         if(personDto != null){
             if(orderService.validateLogin(personDto))

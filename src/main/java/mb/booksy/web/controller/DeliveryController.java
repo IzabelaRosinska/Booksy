@@ -26,7 +26,7 @@ public class DeliveryController {
     }
 
     private void setCartSummaryParameters(Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
+        double price = itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId());
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
     }
 

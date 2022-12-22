@@ -1,14 +1,13 @@
 package mb.booksy.domain.order.delivery;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import mb.booksy.domain.BaseEntity;
 import mb.booksy.domain.inventory.Offer;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "deliveries")

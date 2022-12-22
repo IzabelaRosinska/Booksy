@@ -18,7 +18,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM orders WHERE client_id = ?1")
     List<Order> findAllUserOrders(Long userId);
 
-    @Query(nativeQuery = true, value = "SELECT COUNT(items_in_carts.number) FROM orders INNER JOIN carts ON orders.cart_id = carts.id INNER JOIN items_in_carts ON carts.id = items_in_carts.cart_id WHERE orders.id = ?1")
+    @Query(nativeQuery = true, value = "SELECT SUM(items_in_carts.number) FROM orders INNER JOIN carts ON orders.cart_id = carts.id INNER JOIN items_in_carts ON carts.id = items_in_carts.cart_id WHERE orders.id = ?1")
     Integer countOrderItems(Long orderId);
 
     @Query(nativeQuery = true, value = "SELECT SUM(items_in_carts.number * items.price) FROM orders INNER JOIN carts ON orders.cart_id = carts.id INNER JOIN items_in_carts ON carts.id = items_in_carts.cart_id INNER JOIN items ON items.id = items_in_carts.item_id WHERE orders.id = ?1")

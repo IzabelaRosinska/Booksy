@@ -3,9 +3,7 @@ package mb.booksy.domain.order.cart;
 import lombok.*;
 import mb.booksy.domain.BaseEntity;
 import mb.booksy.domain.inventory.Item;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @Setter

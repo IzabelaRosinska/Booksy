@@ -4,11 +4,8 @@ import lombok.*;
 import mb.booksy.domain.BaseEntity;
 import mb.booksy.domain.order.Order;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,10 +22,8 @@ public class Cart extends BaseEntity {
         this.itemNumber = 0;
     }
 
-
     @Column(name = "init_date")
     private LocalDate initDate;
-
 
     @Column(name = "item_number")
     private Integer itemNumber;

@@ -23,6 +23,6 @@ public interface ItemInCartRepository  extends CrudRepository<ItemInCart, Long> 
     @Query(nativeQuery = true, value = "SELECT SUM(items_in_carts.number * items.price) FROM items_in_carts INNER JOIN items ON items_in_carts.item_id = items.id INNER JOIN carts ON items_in_carts.cart_id = carts.id WHERE items_in_carts.cart_id = ?1")
     Double countCartPrice(Long cartId);
 
-    @Query(nativeQuery = true, value = "SELECT (SUM(items_in_carts.number * items.price) * 0.9) FROM items_in_carts INNER JOIN items ON items_in_carts.item_id = items.id INNER JOIN carts ON items_in_carts.cart_id = carts.id WHERE items_in_carts.cart_id = ?1")
+    @Query(nativeQuery = true, value = "SELECT (SUM(items_in_carts.number * items.price) * 90) FROM items_in_carts INNER JOIN items ON items_in_carts.item_id = items.id INNER JOIN carts ON items_in_carts.cart_id = carts.id WHERE items_in_carts.cart_id = ?1")
     Double countCartDiscount(Long cartId);
 }

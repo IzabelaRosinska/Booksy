@@ -58,7 +58,7 @@ public class UserController {
 
     @GetMapping({"/receiver", "/receiver.html"})
     public String getPersonDetails(PersonDto personDto, Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
+        double price = itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId());
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
 
         return "person";
@@ -66,7 +66,7 @@ public class UserController {
 
     @PostMapping({"/receiver", "/receiver.html"})
     public String setPersonDetails(PersonDto person, Model model) {
-        double price = itemService.countPrice(userAuthenticationService.getAuthenticatedClientId());
+        double price = itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId());
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
         orderService.saveOrder(person);
 
