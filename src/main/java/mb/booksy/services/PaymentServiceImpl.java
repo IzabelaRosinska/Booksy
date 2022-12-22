@@ -71,11 +71,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public PaymentDto createBlikPayment() {
         Client user = (Client)userAuthenticationService.getAuthenticatedUser();
 
         Payment payment = Payment.builder().paymentDate(LocalDate.now()).paymentType(PaymentType.BLIK).build();
-        payment.setAmount(itemService.countDiscount(user.getId()));
+        payment.setAmount(itemService.countDiscount());
         paymentRepository.save(payment);
 
         PaymentDto dto = paymentMapper.paymentToPaymentDto(payment);
@@ -91,14 +92,16 @@ public class PaymentServiceImpl implements PaymentService {
         Client user = (Client)userAuthenticationService.getAuthenticatedUser();
         Long orderId = orderRepository.getOrderId(user.getId()).get(0).getId();
         orderRepository.savePayment(paymentDto.getId(), orderId);
+        orderRepository.setEnded(orderId);
     }
 
     @Override
+    @Transactional
     public PaymentDto createPayUPayment(PaymentDto paymentDto) {
         Client user = (Client)userAuthenticationService.getAuthenticatedUser();
 
         Payment payment = Payment.builder().paymentDate(LocalDate.now()).paymentType(PaymentType.PAYU).build();
-        payment.setAmount(itemService.countDiscount(user.getId()));
+        payment.setAmount(itemService.countDiscount());
         paymentRepository.save(payment);
 
         PaymentDto dto = paymentMapper.paymentToPaymentDto(payment);

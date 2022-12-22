@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CartService  extends BaseService<Cart, Long> {
 
-    void deleteItemFromCart(Long cartId, Long itemId);
+    void deleteItemFromCart(Long itemId);
 
-    String updateItemNumber(Long cartId, Long itemId, Integer newNumber);
+    String updateItemNumber(Long itemId, Integer newNumber);
 
     List<ReasonDto> getComplaintReasons();
 

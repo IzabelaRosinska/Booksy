@@ -18,13 +18,11 @@ public class OrderController {
     private final ItemService itemService;
     private final CartService cartService;
     private final OrderService orderService;
-    private final UserAuthenticationService userAuthenticationService;
 
-    public OrderController(ItemService itemService, CartService cartService, OrderService orderService, UserAuthenticationService userAuthenticationService) {
+    public OrderController(ItemService itemService, CartService cartService, OrderService orderService) {
         this.itemService = itemService;
         this.cartService = cartService;
         this.orderService = orderService;
-        this.userAuthenticationService = userAuthenticationService;
     }
 
     @GetMapping({"/orders", "/orders.html"})
@@ -39,7 +37,7 @@ public class OrderController {
     public String getOrder(@RequestParam("orderId") String orderId, Model model) {
         OrderDto orderDto = orderService.findOrderById(orderId);
         model.addAttribute("orderDto", orderDto);
-        List<ItemDto> results = itemService.findAllOrderItem(orderId, userAuthenticationService.getAuthenticatedClientId());
+        List<ItemDto> results = itemService.findAllOrderItem(orderId);
         if (!results.isEmpty())
             model.addAttribute("selections", results);
         return "order";
@@ -47,7 +45,7 @@ public class OrderController {
 
     @GetMapping({"/complaint", "/complaint.html"})
     public String getComplaintDetails(@RequestParam("orderId") String orderId, ComplaintDto complaintDto, Model model) {
-        List<ItemDto> items = itemService.findAllOrderItem(orderId, userAuthenticationService.getAuthenticatedClientId());
+        List<ItemDto> items = itemService.findAllOrderItem(orderId);
         if (!items.isEmpty())
             model.addAttribute("items", items);
 
@@ -76,7 +74,7 @@ public class OrderController {
 
     @GetMapping({"/account", "/accountt.html"})
     public String getAccountDetails(ComplaintDto complaintDto, Model model) {
-        List<ComplaintDto> complaints = orderService.findAllUserComplaints(userAuthenticationService.getAuthenticatedClientId());
+        List<ComplaintDto> complaints = orderService.findAllUserComplaints();
         if (!complaints.isEmpty())
             model.addAttribute("selections", complaints);
 

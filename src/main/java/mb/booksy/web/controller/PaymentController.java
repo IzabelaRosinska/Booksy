@@ -18,17 +18,15 @@ public class PaymentController {
     private final ItemService itemService;
     private final OrderService orderService;
     private final PaymentService paymentService;
-    private final UserAuthenticationService userAuthenticationService;
 
-    public PaymentController(ItemService itemService, OrderService orderService, PaymentService paymentService, UserAuthenticationService userAuthenticationService) {
+    public PaymentController(ItemService itemService, OrderService orderService, PaymentService paymentService) {
         this.itemService = itemService;
         this.orderService = orderService;
         this.paymentService = paymentService;
-        this.userAuthenticationService = userAuthenticationService;
     }
 
     private void setCartSummaryParameters(Model model) {
-        double price = itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId());
+        double price = itemService.countDiscount();
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
     }
 

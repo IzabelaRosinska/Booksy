@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     public void saveOrder(PersonDto person) {
         Client client = (Client)userAuthenticationService.getAuthenticatedUser();
         Cart cart = cartRepository.findByCartId(client.getId());
-        Order order = Order.builder().orderDate(LocalDate.now()).client(client).cart(cart).build();
+        Order order = Order.builder().orderDate(LocalDate.now()).client(client).cart(cart).ifEnded(false).build();
 
         order.setReceiverName(person.getName());
         order.setReceiverSurname(person.getSurname());
@@ -101,8 +101,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<ComplaintDto> findAllUserComplaints(Long authenticatedClientId) {
-        List<ComplaintDto> complaints = complaintRepository.findAllByUserId(authenticatedClientId)
+    public List<ComplaintDto> findAllUserComplaints() {
+        Long clientId = userAuthenticationService.getAuthenticatedClientId();
+        List<ComplaintDto> complaints = complaintRepository.findAllByUserId(clientId)
                 .stream()
                 .map(complaint -> {
                     ComplaintDto dto = complaintMapper.complaintToComplaintDto(complaint);

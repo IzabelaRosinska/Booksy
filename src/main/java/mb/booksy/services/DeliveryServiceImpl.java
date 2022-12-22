@@ -8,6 +8,8 @@ import mb.booksy.web.model.CourierDeliveryDto;
 import mb.booksy.web.model.DeliveryPointDto;
 import mb.booksy.web.model.InpostBoxDto;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class DeliveryServiceImpl implements DeliveryService {
 
+    private final OrderRepository orderRepository;
     private final InpostBoxMapper inpostBoxMapper;
     private final InpostBoxRepository inpostBoxRepository;
     private final InpostDeliveryRepository inpostDeliveryRepository;
@@ -23,8 +26,10 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final CourierDeliveryRepository courierDeliveryRepository;
     private final PointDeliveryRepository pointDeliveryRepository;
     private final DeliveryPointMapper deliveryPointMapper;
+    private final ItemService itemService;
 
-    public DeliveryServiceImpl(InpostBoxRepository inpostBoxRepository, DeliveryPointRepository deliveryPointRepository, InpostBoxMapper inpostBoxMapper, DeliveryPointMapper deliveryPointMapper, DeliveryRepository deliveryRepository, InpostDeliveryRepository inpostDeliveryRepository, CourierDeliveryRepository courierDeliveryRepository, PointDeliveryRepository pointDeliveryRepository) {
+    public DeliveryServiceImpl(OrderRepository orderRepository, InpostBoxRepository inpostBoxRepository, DeliveryPointRepository deliveryPointRepository, InpostBoxMapper inpostBoxMapper, DeliveryPointMapper deliveryPointMapper, DeliveryRepository deliveryRepository, InpostDeliveryRepository inpostDeliveryRepository, CourierDeliveryRepository courierDeliveryRepository, PointDeliveryRepository pointDeliveryRepository, ItemService itemService) {
+        this.orderRepository = orderRepository;
         this.inpostBoxRepository = inpostBoxRepository;
         this.deliveryPointRepository = deliveryPointRepository;
         this.deliveryRepository = deliveryRepository;
@@ -33,32 +38,39 @@ public class DeliveryServiceImpl implements DeliveryService {
         this.pointDeliveryRepository = pointDeliveryRepository;
         this.inpostBoxMapper = inpostBoxMapper;
         this.deliveryPointMapper = deliveryPointMapper;
+        this.itemService = itemService;
     }
 
     @Override
+    @Transactional
     public void saveInpostDelivery(InpostBoxDto inpostBoxDto) {
         InpostBox inpostBox = inpostBoxRepository.findByBoxId(inpostBoxDto.getId());
         InpostDelivery inpostDelivery = InpostDelivery.builder().inpostBox(inpostBox).build();
         Delivery delivery = Delivery.builder().inpostDelivery(inpostDelivery).build();
         inpostDeliveryRepository.save(inpostDelivery);
-        deliveryRepository.save(delivery);
+        Delivery d = deliveryRepository.save(delivery);
+        orderRepository.addDelivery(d.getId(), orderRepository.findOrderWithCartId(itemService.getCurrentCartId()).getId());
     }
 
     @Override
+    @Transactional
     public void saveCourierDelivery(CourierDeliveryDto courierDeliveryDto) {
         CourierDelivery courierDelivery = CourierDelivery.builder().deliveryAddress(courierDeliveryDto.getAddress1() + ", " + courierDeliveryDto.getAddress2() + " " + courierDeliveryDto.getAddress3()).build();
         Delivery delivery = Delivery.builder().courierDelivery(courierDelivery).build();
-        courierDeliveryRepository.save(courierDelivery);
-        deliveryRepository.save(delivery);
+        courierDeliveryRepository.save(courierDelivery);;
+        Delivery d = deliveryRepository.save(delivery);
+        orderRepository.addDelivery(d.getId(), orderRepository.findOrderWithCartId(itemService.getCurrentCartId()).getId());
     }
 
     @Override
+    @Transactional
     public void savePointDelivery(DeliveryPointDto deliveryPointDto) {
         DeliveryPoint deliveryPoint = deliveryPointRepository.findByPointId(deliveryPointDto.getId());
         PointDelivery pointDelivery = PointDelivery.builder().deliveryPoint(deliveryPoint).build();
         Delivery delivery = Delivery.builder().pointDelivery(pointDelivery).build();
         pointDeliveryRepository.save(pointDelivery);
-        deliveryRepository.save(delivery);
+        Delivery d = deliveryRepository.save(delivery);
+        orderRepository.addDelivery(d.getId(), orderRepository.findOrderWithCartId(itemService.getCurrentCartId()).getId());
     }
 
     @Override

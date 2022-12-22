@@ -14,7 +14,7 @@ public interface OrderService extends BaseService<Order, Long> {
     boolean validateComplaint(String orderId, ComplaintDto complaintDto);
 
     List<OrderDto> findAllUserOrders();
-    List<ComplaintDto> findAllUserComplaints(Long authenticatedClientId);
+    List<ComplaintDto> findAllUserComplaints();
 
     OrderDto findOrderById(String orderId);
 }

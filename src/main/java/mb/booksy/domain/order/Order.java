@@ -18,15 +18,19 @@ import java.util.Set;
 public class Order extends BaseEntity {
 
     @Builder
-    public Order(Long id, LocalDate orderDate, Client client, Cart cart) {
+    public Order(Long id, LocalDate orderDate, Client client, Cart cart, Boolean ifEnded) {
         super(id);
         this.orderDate = orderDate;
         this.client = client;
         this.cart = cart;
+        this.ifEnded = ifEnded;
     }
 
     @Column(name = "order_date")
     private LocalDate orderDate;
+
+    @Column(name = "if_ended")
+    private Boolean ifEnded;
 
     @Column(name = "receiver_name")
     private String receiverName;
@@ -47,8 +51,8 @@ public class Order extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)

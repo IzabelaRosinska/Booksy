@@ -5,12 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mb.booksy.domain.order.Order;
+import mb.booksy.domain.order.cart.Cart;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -46,6 +49,9 @@ public class Client extends Person {
 
     @Column(name = "loyalty_points")
     private Integer loyaltyPoints;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    private List<Cart> carts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private List<Order> orders = new ArrayList<>();

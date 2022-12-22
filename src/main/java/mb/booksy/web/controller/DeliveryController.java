@@ -2,7 +2,6 @@ package mb.booksy.web.controller;
 
 import mb.booksy.services.DeliveryService;
 import mb.booksy.services.ItemService;
-import mb.booksy.services.UserAuthenticationService;
 import mb.booksy.web.model.CourierDeliveryDto;
 import mb.booksy.web.model.DeliveryPointDto;
 import mb.booksy.web.model.InpostBoxDto;
@@ -17,16 +16,14 @@ public class DeliveryController {
 
     private final ItemService itemService;
     private final DeliveryService deliveryService;
-    private final UserAuthenticationService userAuthenticationService;
 
-    public DeliveryController(ItemService itemService, DeliveryService deliveryService, UserAuthenticationService userAuthenticationService) {
+    public DeliveryController(ItemService itemService, DeliveryService deliveryService) {
         this.itemService = itemService;
         this.deliveryService = deliveryService;
-        this.userAuthenticationService = userAuthenticationService;
     }
 
     private void setCartSummaryParameters(Model model) {
-        double price = itemService.countDiscount(userAuthenticationService.getAuthenticatedClientId());
+        double price = itemService.countDiscount();
         model.addAttribute("desc", "Cena produktów: " + price + " PLN");
     }
 
@@ -72,7 +69,6 @@ public class DeliveryController {
     @GetMapping({"/kurier", "/kurier.html"})
     public String chooseCourier(CourierDeliveryDto courierDeliveryDto, Model model) {
         setCartSummaryParameters(model);
-
         return "courier";
     }
 

@@ -1,6 +1,7 @@
 package mb.booksy.repository;
 
 import mb.booksy.domain.inventory.Item;
+import mb.booksy.domain.order.Order;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import java.util.Collection;

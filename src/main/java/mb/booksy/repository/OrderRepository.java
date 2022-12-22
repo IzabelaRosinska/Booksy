@@ -26,4 +26,18 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM orders WHERE id = ?1")
     Order findOrderById(Long valueOf);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE orders SET if_ended = true WHERE id = ?1")
+    void setEnded(Long orderId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM orders WHERE cart_id = ?1")
+    Order findOrderWithCartId(Long cartId);
+
+    @Query(nativeQuery = true, value = "SELECT cart_id FROM orders WHERE id = ?1")
+    Long findCartIdForOrder(Long orderId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE orders SET delivery_id = ?1 WHERE id = ?2")
+    void addDelivery(Long deliveryId, Long orderId);
 }

@@ -16,28 +16,30 @@ public class CartServiceImpl implements CartService {
 
     private final ItemInCartRepository itemInCartRepository;
     private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
-    public CartServiceImpl(ItemInCartRepository itemInCartRepository, ItemRepository itemRepository) {
+    public CartServiceImpl(ItemInCartRepository itemInCartRepository, ItemRepository itemRepository, ItemService itemService) {
         this.itemInCartRepository = itemInCartRepository;
         this.itemRepository = itemRepository;
+        this.itemService = itemService;
     }
 
     @Override
     @Transactional
-    public void deleteItemFromCart(Long cartId, Long itemId) {
-        itemInCartRepository.deleteItemInCart(cartId, itemId);
+    public void deleteItemFromCart(Long itemId) {
+        itemInCartRepository.deleteItemInCart(itemService.getCurrentCartId(), itemId);
     }
 
     @Override
     @Transactional
-    public String updateItemNumber(Long cartId, Long itemId, Integer newNumber) {
+    public String updateItemNumber(Long itemId, Integer newNumber) {
         Integer maxNumber = itemRepository.findById(itemId).get().getAvailability();
         if(newNumber > maxNumber)
             return "Liczba dostępnych sztuk - " + maxNumber;
         else if(newNumber < 1)
             return "Liczba sztuk musi być większa od 0";
         else {
-            itemInCartRepository.updateItemNumber(newNumber, cartId, itemId);
+            itemInCartRepository.updateItemNumber(newNumber, itemService.getCurrentCartId(), itemId);
             return "";
         }
     }
