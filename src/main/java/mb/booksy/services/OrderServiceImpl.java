@@ -74,7 +74,10 @@ public class OrderServiceImpl implements OrderService {
                 .map(order -> orderMapper.orderToOrderDto(order))
                 .map(order -> {
                     order.setProductNumber(orderRepository.countOrderItems(order.getId()));
-                    order.setAmount(orderRepository.countAmount(order.getId()));
+                    double newPrice = orderRepository.countAmount(order.getId()) * 90;
+                    newPrice = Math.round(newPrice);
+                    newPrice /= 100;
+                    order.setAmount(newPrice);
                     return order;
                 })
                 .collect(Collectors.toList());

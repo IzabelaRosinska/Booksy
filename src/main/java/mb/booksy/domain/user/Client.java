@@ -32,7 +32,6 @@ public class Client extends Person {
         this.loyaltyPoints = loyaltyPoints;
     }
 
-    @NotEmpty
     @Column(name = "telephone")
     private String telephone;
 
@@ -40,7 +39,6 @@ public class Client extends Person {
     @Column(name = "email")
     private String email;
 
-    @NotEmpty
     @Column(name = "account")
     private String account;
 

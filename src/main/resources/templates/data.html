@@ -42,12 +42,13 @@
                     <input size="100" type="text" class="form-control" id="kod" name="kod" th:field="*{kod}">
                 </div>
             </div>
+            <br>
             <div class="control-group">
                 <div class="col-sm-2">
-                    <a type="button" class="btn btn-outline" th:text="Anuluj" th:href="@{/payment}" style="width: 90px;margin-top:0px;margin-left: 60px; background-color: gray;color:white" ></a>
+                    <a type="button" class="btn btn-outline" th:text="Anuluj" th:href="@{/payment}" style="width: 90px;margin-top:0px;margin-left: 1500px; background-color: gray;color:white" ></a>
                 </div>
                 <div class="col-sm-2">
-                    <button class="btn btn-primary" style="width: 90px;margin-top:0px;margin-left: 90px; background-color: #4682B4;color:white" type="submit">Zapłać</button>
+                    <button class="btn btn-primary" style="width: 90px;margin-top:0px;margin-left: 60px; background-color: #4682B4;color:white" type="submit">Zapłać</button>
                 </div>
             </div>
             <input type="hidden" th:field="*{id}">

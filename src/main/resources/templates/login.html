@@ -5,23 +5,24 @@
 </head>
 <body>
 <div class="container-fluid text-center">
-<form class="form-signin" th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto;">
-    <div class="border border-secondary p-3 rounded" style="margin-top: 10px">
-    <br>
-    <br>
-    <br>
-    <h2 class="form-signin-heading"style="margin-bottom: 10px">Zaloguj</h2>
-    <div>
-        <input id="username" name="username" type="email" class="form-control" placeholder="Email"/>
-    </div>
-    <br>
-    <div>
-        <input  id="password" name="password" type="password" class="form-control" th:placeholder="Hasło"/>
-    </div>
-    <br>
-    <button id="btnSave" type="submit" style="border:1px solid black; background-color: #e3e7e6">Zaloguj</button><br/>
-    </div>
-</form>
+    <form class="form-signin" th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto;">
+        <div class="border border-secondary p-3 rounded" style="margin-top: 10px">
+            <br>
+            <br>
+            <br>
+            <h2 class="form-signin-heading" th:text="Logowanie" style="margin-bottom: 10px"></h2>
+            <br>
+            <div>
+                <input id="username" name="username" type="email" class="form-control" placeholder="Email"/>
+            </div>
+            <br>
+            <div>
+                <input  id="password" name="password" type="password" class="form-control" th:placeholder="Hasło"/>
+            </div>
+            <br>
+            <button id="btnSave" type="submit" th:text="Zaloguj" style="width: 90px; height: 30px; margin-top:10px;margin-left: 0px; border-color: #4682B4; background-color: #4682B4;color:white">Sign In</button><br/>
+        </div>
+    </form>
 </div>
 </body>
 </html>

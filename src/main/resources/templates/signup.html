@@ -8,6 +8,8 @@
 <!--/*@thymesVar id="user" type="mb.booksy.web.model.UserDto"*/-->
 <form class="form-signup" th:action="@{/signup}" th:object="${user}" method="post" style="max-width: 550px; margin: 0 auto;">
     <div class="border border-secondary p-7 rounded">
+        <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+        <h2 th:if="${message != null}" th:text="${message}"></h2>
         <br>
         <br>
         <h2 class="form-signin-heading" style="margin-left: 230px">Zaloguj się</h2>
@@ -50,7 +52,7 @@
         </div>
         <div class="row" style="margin-top: 20px">
             <div class="col-md-3 form-group" th:class="${#fields.hasErrors('password')}">
-            <label class="col-sm-3 col-form-label">Hasło</label>
+                <label class="col-sm-3 col-form-label">Hasło</label>
                 <div class="col-sm-7">
                     <input type="password" class="form-control" th:field="*{password}" th:errorclass="has-error"/>
                     <span class="help-block" th:if="${#fields.hasErrors('password')}">
@@ -68,7 +70,7 @@
             </div>
         </div>
         <br>
-        <button type="submit" style="margin-left: 255px;border:1px solid black; background-color: #e3e7e6">Zarejestruj</button>
+        <button type="submit" style="width: 90px; height: 30px; margin-top:10px;margin-left: 250px; border-color: #4682B4; background-color: #4682B4;color:white">Zarejestruj</button>
     </div>
 </form>
 
