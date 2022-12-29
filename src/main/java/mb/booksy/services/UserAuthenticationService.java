@@ -2,6 +2,7 @@ package mb.booksy.services;
 
 import mb.booksy.domain.user.Client;
 import mb.booksy.domain.user.Person;
+import mb.booksy.exceptions.AuthException;
 import mb.booksy.exceptions.UserAlreadyExistException;
 import mb.booksy.repository.ClientRepository;
 import mb.booksy.web.model.UserDto;
@@ -37,7 +38,10 @@ public class UserAuthenticationService implements UserDetailsService {
     public Long getAuthenticatedClientId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Client client = clientRepository.selectClientByUsername(authentication.getName());
-        return client.getId();
+        if(client != null)
+            return client.getId();
+        else
+            return -1L;
     }
 
     public Person getAuthenticatedUser() {

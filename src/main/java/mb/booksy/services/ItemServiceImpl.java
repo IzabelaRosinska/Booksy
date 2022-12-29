@@ -3,7 +3,9 @@ package mb.booksy.services;
 import mb.booksy.domain.inventory.Item;
 import mb.booksy.domain.order.Order;
 import mb.booksy.domain.order.cart.Cart;
+import mb.booksy.domain.order.cart.ItemInCart;
 import mb.booksy.domain.user.Client;
+import mb.booksy.exceptions.AuthException;
 import mb.booksy.repository.CartRepository;
 import mb.booksy.repository.ItemInCartRepository;
 import mb.booksy.repository.ItemRepository;
@@ -80,7 +82,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemDto getItemDetails(ItemDto itemDto, Long cartId){
         String itemPhoto = "";
         try{
-            itemPhoto = new String(Base64.encodeBase64(itemRepository.findById(itemDto.getId()).get().getItemImage()), "UTF-8");
+            Item item = itemRepository.findById(itemDto.getId()).get();
+            itemPhoto = new String(Base64.encodeBase64(item.getItemImage()), "UTF-8");
         }catch(IOException e) {
             e.printStackTrace();
         }
@@ -146,8 +149,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Long getCurrentCartId() {
-        Long clientId = userAuthenticationService.getAuthenticatedClientId();
+    public Long getCurrentCartId(Long... client) {
+        Long clientId;
+        try {
+            if (client.length == 0)
+                clientId = userAuthenticationService.getAuthenticatedClientId();
+            else
+                clientId = client[0];
+        } catch(NullPointerException e) {
+            throw new AuthException("User unauthorized");
+        }
+
         List<Cart> carts_list = cartRepository.findClCarts(clientId);
         List<Cart> carts = new ArrayList<>();
 

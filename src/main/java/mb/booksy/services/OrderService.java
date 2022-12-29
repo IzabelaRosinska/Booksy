@@ -1,6 +1,7 @@
 package mb.booksy.services;
 
 import mb.booksy.domain.order.Order;
+import mb.booksy.domain.user.Client;
 import mb.booksy.web.model.ComplaintDto;
 import mb.booksy.web.model.OrderDto;
 import mb.booksy.web.model.PersonDto;
@@ -13,7 +14,7 @@ public interface OrderService extends BaseService<Order, Long> {
     boolean validateLogin(PersonDto personDto);
     boolean validateComplaint(String orderId, ComplaintDto complaintDto);
 
-    List<OrderDto> findAllUserOrders();
+    List<OrderDto> findAllUserOrders(Long... client);
     List<ComplaintDto> findAllUserComplaints();
 
     OrderDto findOrderById(String orderId);

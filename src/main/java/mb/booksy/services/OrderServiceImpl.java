@@ -5,6 +5,7 @@ import mb.booksy.domain.order.Complaint;
 import mb.booksy.domain.order.Order;
 import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.domain.user.Client;
+import mb.booksy.exceptions.AuthException;
 import mb.booksy.repository.CartRepository;
 import mb.booksy.repository.ComplaintRepository;
 import mb.booksy.repository.ItemRepository;
@@ -32,8 +33,9 @@ public class OrderServiceImpl implements OrderService {
     private final ItemRepository itemRepository;
     private final OrderMapper orderMapper;
     private final ComplaintMapper complaintMapper;
+    private final ItemService itemService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserAuthenticationService userAuthenticationService, CartRepository cartRepository, ComplaintRepository complaintRepository, ItemRepository itemRepository, OrderMapper orderMapper, ComplaintMapper complaintMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, UserAuthenticationService userAuthenticationService, CartRepository cartRepository, ComplaintRepository complaintRepository, ItemRepository itemRepository, OrderMapper orderMapper, ComplaintMapper complaintMapper, ItemService itemService) {
         this.orderRepository = orderRepository;
         this.userAuthenticationService = userAuthenticationService;
         this.cartRepository = cartRepository;
@@ -41,13 +43,14 @@ public class OrderServiceImpl implements OrderService {
         this.itemRepository = itemRepository;
         this.orderMapper = orderMapper;
         this.complaintMapper = complaintMapper;
+        this.itemService = itemService;
     }
 
     @Override
     @Transactional
     public void saveOrder(PersonDto person) {
-        Client client = (Client)userAuthenticationService.getAuthenticatedUser();
-        Cart cart = cartRepository.findByCartId(client.getId());
+        Client client = (Client) userAuthenticationService.getAuthenticatedUser();
+        Cart cart = cartRepository.findByCartId(itemService.getCurrentCartId());
         Order order = Order.builder().orderDate(LocalDate.now()).client(client).cart(cart).ifEnded(false).build();
 
         order.setReceiverName(person.getName());
@@ -56,6 +59,7 @@ public class OrderServiceImpl implements OrderService {
         order.setReceiverPhone(person.getPhone());
 
         orderRepository.save(order);
+
     }
 
     @Override
@@ -68,20 +72,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> findAllUserOrders() {
-        Long clientId = userAuthenticationService.getAuthenticatedClientId();
-        List<OrderDto> orders = orderRepository.findAllUserOrders(clientId).stream()
-                .map(order -> orderMapper.orderToOrderDto(order))
-                .map(order -> {
-                    order.setProductNumber(orderRepository.countOrderItems(order.getId()));
-                    double newPrice = orderRepository.countAmount(order.getId()) * 90;
-                    newPrice = Math.round(newPrice);
-                    newPrice /= 100;
-                    order.setAmount(newPrice);
-                    return order;
-                })
-                .collect(Collectors.toList());
-        return orders;
+    public List<OrderDto> findAllUserOrders(Long... client) {
+        try {
+            Long clientId;
+            if(client.length == 0)
+                clientId = userAuthenticationService.getAuthenticatedClientId();
+            else
+                clientId = client[0];
+
+            return orderRepository.findAllUserOrders(clientId)
+                    .stream()
+                    .map(order -> orderMapper.orderToOrderDto(order))
+                    .map(order -> {
+                        order.setProductNumber(orderRepository.countOrderItems(order.getId()));
+                        double newPrice = orderRepository.countAmount(order.getId()) * 90;
+                        newPrice = Math.round(newPrice);
+                        newPrice /= 100;
+                        order.setAmount(newPrice);
+                        return order;
+                    })
+                    .collect(Collectors.toList());
+        } catch(NullPointerException e) {
+           throw new AuthException("User unauthorized");
+        }
     }
 
     @Override
@@ -96,9 +109,13 @@ public class OrderServiceImpl implements OrderService {
     public boolean validateComplaint(String orderId, ComplaintDto complaintDto) {
         if(complaintDto.getCompItem() != null && complaintDto.getCompReason() != null && complaintDto.getCompMethod() != null) {
             Complaint complaint = complaintMapper.complaintDtoToComplaint(complaintDto);
-            complaint.setOrder(orderRepository.findOrderById(Long.valueOf(orderId)));
-            complaintRepository.save(complaint);
-            return true;
+            Order order = orderRepository.findOrderById(Long.valueOf(orderId));
+            if(order != null) {
+                complaint.setOrder(order);
+                complaintRepository.save(complaint);
+                return true;
+            } else
+                return false;
         }
         return false;
     }
