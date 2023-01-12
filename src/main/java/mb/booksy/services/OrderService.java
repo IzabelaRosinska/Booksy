@@ -1,10 +1,8 @@
 package mb.booksy.services;
 
 import mb.booksy.domain.order.Order;
-import mb.booksy.domain.user.Client;
-import mb.booksy.web.model.ComplaintDto;
-import mb.booksy.web.model.OrderDto;
-import mb.booksy.web.model.PersonDto;
+import mb.booksy.web.model.*;
+
 import java.util.List;
 
 public interface OrderService extends BaseService<Order, Long> {
@@ -18,4 +16,15 @@ public interface OrderService extends BaseService<Order, Long> {
     List<ComplaintDto> findAllUserComplaints();
 
     OrderDto findOrderById(String orderId);
+
+    boolean validateItemInReturn(String orderReturnId, ItemInReturnDto itemInReturnDto);
+
+    Long createNewOrderReturn(String orderId);
+    boolean validOrderReturn(String orderReturnId);
+
+    void deleteOrderReturn(String orderReturnId);
+
+    List<OrderReturnDto> findAllUserOrderReturns();
+
+    OrderReturnDto findOrderReturnById(String orderReturnId);
 }

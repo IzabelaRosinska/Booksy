@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'orders')}">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+<head>
+  <meta charset="UTF-8">
+  <title>Cart</title>
+</head>
+<body>
+<!--/*@thymesVar id="complaintDto" type="mb.booksy.web.model.ComplaintDto"*/-->
+<!--/*@thymesVar id="orderDto" type="mb.booksy.web.model.OrderDto"*/-->
+<!--/*@thymesVar id="itemInReturnDto" type="mb.booksy.web.model.ItemInReturnDto"*/-->
+<br>
+<div class="formgroup row">
+  <div class="form-group col-md-8">
+    <h1>Zgłoszenie zwrotu</h1>
+    <br>
+
+    <form th:object="${itemInReturnDto}" th:action="@{/orderReturn/add(orderId=${orderId}, orderReturnId=${orderReturnId})}" method="post" class="form-horizontal">
+      <div class="form-group row" style="margin-top: 10px; vertical-align: middle">
+        <label for="Wybierz produkt" class="col-sm-3 col-form-label" style="margin-left: 10px; margin-left: 0px; width: 250px;">Wybierz produkty do zwrotu</label>
+        <div class="form-group col-md-5" style="float: left;">
+          <div class="form-group blu-margin">
+            <select class="form-control" th:field="*{itemId}"  id="Wybierz produkt" style="margin-left: 20px; width: 300px">
+              <option value="0">Nazwa produktu</option>
+              <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.itemName}+' - '+${item.bookType}"></option>
+            </select>
+          </div>
+        </div>
+
+        <div style="text-align: center">
+          <button class="btn btn-primary" style="width: 90px; background-color: #4682B4;color:white" type="submit">Dodaj</button>
+        </div>
+
+      </div>
+    </form>
+    <br>
+
+      <fieldset>
+        <legend>Zwracane produkty</legend>
+
+        <span th:if="${noSelections == '1'}">
+          <h3>Tutaj pojawią sie produkty, które zamierzasz zwrócić</h3>
+        </span>
+
+        <table id="find_shortest_terms" class="table table-striped" style="margin-top: 20px; width: 760px">
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th style="width: 50px;vertical-align: middle;text-align: left">Produkt</th>-->
+<!--            <th style="vertical-align: middle; width: 120px">Tytuł</th>-->
+<!--            <th style="vertical-align: middle; width: 70px;vertical-align: middle">Autor</th>-->
+<!--            <th style="vertical-align: middle; width: 40px;margin-left: 10px;vertical-align: middle">Typ</th>-->
+<!--            <th style="vertical-align: middle; width: 30px;">Cena</th>-->
+<!--            <th style="vertical-align: middle; width: 30px;">Liczba sztuk</th>-->
+<!--            <th style="vertical-align: middle; width: 30px;"></th>-->
+<!--            <th style="vertical-align: middle; width: 30px;"></th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+
+          <tbody>
+          <tr th:each="itemDto : ${selections}">
+            <td><img th:src="|data:image/jpg;base64,${itemDto.itemImage}|" id="img" width="100px" height="120px" style="margin: 10px 0px 10px 10px"/></td>
+            <td th:text="${itemDto.itemName}" style="text-align: left;vertical-align: middle"/>
+            <td th:text="${itemDto.producerName}" style="text-align: left;vertical-align: middle"/>
+            <td th:text="${itemDto.bookType}" style="text-align: left;vertical-align: middle"/>
+            <td th:text="${itemDto.price} + ' zł'" style="text-align: left;vertical-align: middle"/>
+            <td th:text="${itemDto.numberInOrderReturn}  + ' szt.'" style="text-align: left;vertical-align: middle"/>
+
+            <td style="text-align: center;vertical-align: middle"><a data-toggle="modal" data-target="#modal-warning" th:attr="data-target='#modal-warning'+${itemDto.id }"><span class="glyphicon glyphicon-edit"></span></a>
+              <!--  MODAL -->
+              <div class="modal modal-warning fade in" th:id="modal-warning+${itemDto.id }" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body" style="height: 270px; width: 600px; text-align: center">
+                      <form name="changeAmount" th:action="@{/orderReturn/update(orderId=${orderId}, orderReturnId=${orderReturnId}, itemId=${itemDto.id})}" method="post" class="form-horizontal" id="item_amount">
+                        <br>
+                        <h3>Zmień liczbę zwracanych sztuk produktu</h3>
+                        <br>
+                        <table style="padding: 20px; border-spacing: 30px">
+                          <tr>
+                            <td>
+                              <label style="font-size:14px;">Liczba zakupionych sztuk:</label>
+                            </td>
+                            <td>
+                              <input size="30" type="text" readonly class="form-control-plaintext" id="number" name="number" th:value="${itemDto.cartAmount}" style="margin-left: 20px">
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <label style="font-size:14px; margin-top: 20px;">Liczba zwracanych sztuk:</label>
+                            </td>
+                            <td>
+                              <input size="30" type="text" class="form-control-plaintext" id="new_number" name="new_number" th:value="${itemDto.numberInOrderReturn}" style="margin-left: 20px; margin-top: 20px;">
+                            </td>
+                          </tr>
+                        </table>
+
+                        <br>
+                        <br>
+                        <div class="row">
+                          <button type="button" class="btn btn-outline" data-dismiss="modal" style="margin-top:10px;width:90px;background-color: #838789;color: white" th:text="Anuluj"></button>
+                          <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" type="submit">Zaakceptuj</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--  MODAL -->
+<!--              <div class="modal modal-warning fade in" th:id="modal-warning+${itemDto.id }" >-->
+<!--                <div class="modal-dialog">-->
+<!--                  <div class="modal-content">-->
+<!--                    <div class="modal-header">-->
+<!--                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>-->
+<!--                    </div>-->
+<!--                    <div class="modal-body" style="height: 190px; width: 500px">-->
+<!--                      <form name="changeAmount" th:action="@{/cart/update(itemId=${itemDto.id})}" method="post" class="form-horizontal" id="item_amount">-->
+<!--                        <label style="font-size:14px; text-align: center; margin-left: 75px; margin-top: 20px">Zakupiona liczba:</label>-->
+<!--                        <input size="30" type="text" readonly class="form-control-plaintext" id="number" th:value="${itemDto.cartAmount}" style="margin-left: 15px">-->
+<!--                        <label style="font-size:14px; text-align: center; margin-left: 73px; margin-top: 20px">Zwracane:</label>-->
+<!--                        <input size="30" type="text" class="form-control-plaintext" id="new_number" name="new_number" th:value="${itemDto.numberInOrderReturn}" style="margin-left: 36px">-->
+<!--                        <br>-->
+<!--                        <div class="row">-->
+<!--                          <br>-->
+<!--                          <button type="button" class="btn btn-outline" data-dismiss="modal" style="margin-top:10px;margin-left:70px; width:90px;background-color: #838789;color: white" th:text="Anuluj"></button>-->
+<!--                          <button class="btn btn-primary" style="width: 90px;margin-top:10px;margin-left: 20px; background-color: #4682B4;color:white" type="submit">Zaakceptuj</button>-->
+<!--                        </div>-->
+<!--                      </form>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+            <td style="text-align: center;vertical-align: middle"><a data-toggle="modal" data-target="#modal-warning2" th:attr="data-target='#modal-warning2'+${itemDto.id }"><span class="glyphicon glyphicon-trash"></span></a>
+              <!--  MODAL -->
+              <div class="modal modal-warning fade in" th:id="modal-warning2+${itemDto.id }" >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body" style="height: 220px; width: 500px">
+                      <label style="font-size:24px; text-align: center; margin-left: 80px; margin-top: 20px">Potwierdź rezygnację ze zwrotu produktu</label>
+                      <br>
+                      <div class="row">
+                        <br>
+                        <button type="button" class="btn btn-outline" data-dismiss="modal" style="margin-top:10px;margin-left:70px; width:70px;background-color: #838789;color: white" th:text="Anuluj"></button>
+                        <a type="button" class="btn btn-outline" style="margin-left: 20px; margin-top:10px; width:70px; background-color: #4682B4;color: white" th:text="Ok" th:href="@{/orderReturn/delete(orderId=${orderId}, orderReturnId=${orderReturnId}, itemId=${itemDto.id})}"></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+
+      <div class="row" style="text-align: center">
+        <br>
+        <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" data-toggle="modal" data-target="#modal-warning3" th:attr="data-target='#modal-warning3'">Zapisz</button>
+        <!--  MODAL -->
+        <div class="modal modal-warning fade in" th:id="modal-warning3" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body" style="height: 220px; width: 500px">
+                <label style="font-size:24px; text-align: center; margin-left: 80px; margin-top: 20px">Czy na pewno dokonać zwrotu?</label>
+                <br>
+                <br>
+                <div class="row">
+                  <br>
+                  <button type="button" class="btn btn-outline" data-toggle="modal" data-target="#modal-warning4" th:attr="data-target='#modal-warning4'" data-dismiss="modal" style="margin-top:10px;margin-left:70px; width:70px;background-color: #838789;color: white" th:text="Anuluj"></button>
+                  <a type="button" class="btn btn-outline" style="margin-left: 20px; margin-top:10px; width:70px; background-color: #4682B4;color: white" th:text="Ok" th:href="@{/orderReturn/validate(orderId=${orderId}, orderReturnId=${orderReturnId})}"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--  MODAL -->
+        <div class="modal modal-warning fade in" th:id="modal-warning4" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body" style="height: 220px; width: 500px">
+                <label style="font-size:24px; text-align: center; margin-left: 80px; margin-top: 20px">Czy na pewno anulować zwrot?</label>
+                <br>
+                <br>
+                <div class="row">
+                  <br>
+                  <button type="button" class="btn btn-outline" data-dismiss="modal" style="margin-top:10px;margin-left:70px; width:70px;background-color: #838789;color: white" th:text="Anuluj"></button>
+                  <a type="button" class="btn btn-outline" style="margin-left: 20px; margin-top:10px; width:70px; background-color: #4682B4;color: white" th:text="Ok" th:href="@{/orderReturn/delete/orderReturn(orderId=${orderId}, orderReturnId=${orderReturnId})}"></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!--  MODAL -->
+  <div class="modal modal-warning fade in" th:id="modal-invalid" id="modal-invalid">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+          <h3>Nie można utworzyć zwrotu bez zwracanych produktów</h3>
+          <br>
+          <span class="glyphicon glyphicon-remove"></span>
+          <br>
+          <br>
+          <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h1 th:attr="modal=${modal}" id="modal-status"></h1>
+<!--  <h1 id="checksum1"></h1>-->
+<!--  <h1 id="checksum"></h1>-->
+  <button id="btn-invalid" data-toggle="modal" data-target="#modal-invalid" th:attr="data-target='#modal-invalid'" hidden></button>
+</div>
+<script>
+
+  window.onload = function() {
+    var element = document.getElementById('modal-status');
+    var modalStatus = element.getAttribute('modal');
+
+    // document.getElementById("checksum1").innerText = "nie dziala";
+
+    if (modalStatus === '1') {
+      // document.getElementById("checksum1").innerText = "1 if";
+      var button1 = document.getElementById('btn-invalid');
+      button1.click();
+    }
+
+    // document.getElementById("checksum").innerText = modalStatus;
+
+  }
+</script>
+</body>
+</html>

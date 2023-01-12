@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>RUCH</title>
+</head>
+<body>
+<!--/*@thymesVar id="deliveryPointDto" type="mb.booksy.web.model.DeliveryPointDto"*/-->
+<div class="form group row">
+    <div class="form-group col-md-6">
+        <h1>Wybierz kiosk RUCHU</h1>
+        <br>
+        <form th:object="${deliveryPointDto}" th:action="@{/ruch}" method="post" class="form-horizontal">
+            <div class="form-group blu-margin">
+                <select class="form-control" th:field="*{id}"  id="Punkt Odbioru Kiosk RUCHU" style="margin-left: 20px">
+                    <option value="0">Punkt Odbioru Kiosk RUCHU</option>
+                    <option th:each="deliveryPoint : ${points}" th:value="${deliveryPoint.id}" th:text="${deliveryPoint.pointAddress}"></option>
+                </select>
+            </div>
+            <div class="row">
+                <br>
+                <button class="btn btn-primary" style="width: 90px;margin-top:10px;margin-left: 270px; background-color: #4682B4;color:white" type="submit">Zapisz</button>
+            </div>
+        </form>
+
+    </div>
+
+    <div class="form-group col-md-2" style="margin-left:250px">
+        <h1>Podsumowanie</h1>
+        <br>
+        <p th:text="${desc}" class="ridge" style="padding-left: 30px; padding-top: 30px; font-size: 18px; font-family: Arial"></p>
+    </div>
+</div>
+
+
+
+</body>
+</html>

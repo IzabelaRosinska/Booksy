@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'shop')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+<br><br>
+
+<div style="text-align: center;">
+    <h1>Nasza oferta</h1>
+    <div style="text-align: center; padding: 15px;">
+        <form th:object="${filterDto}" th:action="@{/shop}" method="get" class="form-horizontal">
+            <table style="table-layout: auto;  border-spacing: 5px; width: 100%;">
+                <tr>
+                    <td>
+                        <h2>Filtruj</h2>
+                    </td>
+                    <td>
+                        <label for="typ" class="col-sm-3 col-form-label" style="margin-left: 0px">Typ:</label>
+                    </td>
+                    <td>
+                        <input size="100" type="text" class="form-control" th:field="*{bookType}" id="typ" style="margin-left: 10px; width:200px">
+                    </td>
+                    <td>
+                        <label for="gatunek" class="col-sm-3 col-form-label" style="margin-left: 0px">Gatunek:</label>
+                    </td>
+                    <td>
+                        <input size="100" type="text" class="form-control" th:field="*{genre}" id="gatunek" style="margin-left: 10px; width:200px">
+                    </td>
+                    <td>
+                        <label for="autor" class="col-sm-3 col-form-label" style="margin-left: 0px">Autor:</label>
+                    </td>
+                    <td>
+                        <input size="100" type="text" class="form-control" th:field="*{producerName}" id="autor" style="margin-left: 10px; width:200px">
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" style="width: 90px; background-color: #4682B4;color:white" type="submit">Filtruj</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <hr>
+
+        <table id="find_shortest_terms" class="table table-striped">
+            <thead>
+            <tr>
+                <th style="width: 50px;vertical-align: middle;text-align: left">Produkt</th>
+                <th style="width: 120px">Tytuł</th>
+                <th style="width: 70px;vertical-align: middle">Autor</th>
+                <th style="width: 40px;margin-left: 10px;vertical-align: middle">Typ</th>
+                <th style="width: 30px;">Cena</th>
+                <th style="width: 30px;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="itemDto : ${items}">
+                <td><img th:src="|data:image/jpg;base64,${itemDto.itemImage}|" id="img" width="100px" height="120px" style="margin: 10px 0px 10px 10px"/></td>
+                <td th:text="${itemDto.itemName}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${itemDto.producerName}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${itemDto.bookType}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${itemDto.price} + ' zł'" style="text-align: left;vertical-align: middle"/>
+                <td><a class="btn btn-primary" th:href="@{/shop/product(id=${itemDto.id})}" style="width: 90px; background-color: #4682B4;color:white; margin-top: 55px;">Pokaż</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <br><br>
+        <h2 th:text="${notFound}"></h2>
+    </div>
+</div>
+
+</body>
+</html>

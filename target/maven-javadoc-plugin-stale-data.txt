@@ -1,0 +1,24 @@
+cmd.exe
+/X
+/C
+""C:\Program Files\Java\jdk-17.0.5\bin\javadoc.exe" @options @packages"
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\allclasses-index.html = 1673122827725
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\allpackages-index.html = 1673122827728
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\element-list = 1673122826998
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\help-doc.html = 1673122827789
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\index-all.html = 1673122827780
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\index.html = 1673122827688
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\jquery-ui.overrides.css = 1673122827851
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\member-search-index.js = 1673122827736
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\module-search-index.js = 1673122827730
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\options = 1673122824155
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\overview-summary.html = 1673122827783
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\overview-tree.html = 1673122827681
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\package-search-index.js = 1673122827732
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\packages = 1673122824156
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\script.js = 1673122827794
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\search.js = 1673122827797
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\serialized-form.html = 1673122827169
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\stylesheet.css = 1673122827792
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\tag-search-index.js = 1673122827738
+C:\Studia\Semestr 5\Projektowanie oprogramowania\Projekt\booksy\booksy\target\apidocs\type-search-index.js = 1673122827734

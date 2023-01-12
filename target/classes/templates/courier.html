@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'cart')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Kurier</title>
+</head>
+<body>
+<!--/*@thymesVar id="courierDeliveryDto" type="mb.booksy.web.model.CourierDeliveryDto"*/-->
+<div class="form group row">
+    <div class="form-group col-md-8">
+        <h1>Wprowadź adres odbioru zamówienia</h1>
+        <br>
+        <form th:object="${courierDeliveryDto}" th:action="@{/kurier}" method="post" class="form-horizontal">
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="address1" class="col-sm-2 col-form-label" style="margin-left: 0px">Ulica, numer</label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="address1" name="address1" th:field="*{address1}">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="address2" class="col-sm-2 col-form-label" style="margin-left: 0px">Kod pocztowy</label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="address2" name="address2" th:field="*{address2}">
+                </div>
+            </div>
+            <div class="form-group row" style="margin-top: 10px">
+                <label for="address3" class="col-sm-2 col-form-label" style="margin-left: 0px">Miasto</label>
+                <div class="form-group col-md-7">
+                    <input size="100" type="text" class="form-control" id="address3" name="address3" th:field="*{address3}">
+                </div>
+            </div>
+            <div class="row">
+                <br>
+                <button class="btn btn-primary" style="width: 90px;margin-top:10px;margin-left: 300px; background-color: #4682B4;color:white" type="submit">Zapisz</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-group col-md-2" style="margin-left:50px">
+        <h1>Podsumowanie</h1>
+        <br>
+        <p th:text="${desc}" class="ridge" style="padding-left: 30px; padding-top: 30px; font-size: 18px; font-family: Arial"></p>
+    </div>
+</div>
+
+
+
+</body>
+</html>

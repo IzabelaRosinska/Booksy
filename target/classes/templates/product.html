@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'shop')}">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+
+<br><br>
+<div style="text-align: center;">
+    <h1>Przeglądasz produkt</h1>
+
+    <div style="padding: 15px; background-color: #DFDFDF; border: 1px solid #34302d;">
+        <table class="product-table">
+            <div style="text-align: left;">
+                <button id="back-button" class="btn btn-primary" onclick="history.back()" style="background-color: #4682B4;color:white;">Powrót</button>
+<!--                <a type="button" class="btn btn-outline" th:href="@{/receiver}" style="width: 250px; height:30px; margin-left:30px; vertical-align: middle; margin-top: 10px; border:2px solid black; background-color: white; color: black">Powrót</a>-->
+            </div>
+            <thead>
+            <tr class="product-table">
+                <td rowspan="2" class="product-table">
+                    <img th:src="|data:image/jpg;base64,${product.itemImage}|" id="img" width="300px" height="360px" style="margin: 10px 0px 10px 10px"/>
+                </td>
+                <td class="product-table">
+                    <div style="text-align: left;">
+                        <p style="font-weight: bold; font-size: 20px;" th:text="${product.itemName}"></p>
+                        <p style="font-weight: bold; color: #303e45; font-size: 16px;" th:text="${product.producerName}"></p>
+                        <p style="color: #303e45; font-size: 16px;" th:text="${product.bookType}"></p>
+                        <br>
+                        <br>
+                        <span th:if="${isFavorite == 0}">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#modal-fav-warning" th:attr="data-target='#modal-fav-warning'+${product.id}" style="width: 200px; background-color: #4682B4;color:white;">Dodaj do ulubionych</a>
+                        <span class="glyphicon glyphicon-heart"></span>
+                        </span>
+
+                        <span th:if="${isFavorite == 1}">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#modal-unfav-warning" th:attr="data-target='#modal-unfav-warning'+${product.id}" style="width: 200px; background-color: #4682B4;color:white;">Usuń z ulubionych</a>
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </span>
+                        <br>
+                        <br>
+                        <span th:if="${product.availability == 0}">
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#modal-alert-add-warning" th:attr="data-target='#modal-alert-add-warning'+${product.id}" style="width: 200px; background-color: #4682B4;color:white;">Ustaw alert dostępności</a>
+                            <span class="glyphicon glyphicon-envelope"></span>
+                        </span>
+                    </div>
+                </td>
+                <td class="product-table">
+                    <div>
+                        <div style="background-color: azure; text-align: center; border: 1px solid #34302d; padding: 15px; margin-top: 5px">
+                            <h3 th:text="${isInCart}" style="color: #4682B4;"></h3>
+                            <h1 th:text="${product.price} + ' zł'"></h1>
+
+                            <span th:if="${product.availability != 0}">
+                                <form th:action="@{/shop/product/add(id=${product.id}, numberItems=${numberItems})}" method="post" class="form-horizontal" id="addToCartForm">
+                                    <table style="table-layout: auto;  border-spacing: 5px; width: 100%;">
+                                        <tr>
+                                            <td class="product-table" style="text-align: right;">
+                                                <h3>Liczba sztuk:</h3>
+                                            </td>
+                                            <td class="product-table">
+                                                <input type="text" value="1" onkeypress='return event.charCode >= 48 && event.charCode <= 57' size="10" class="form-control" name="numberItems" id="numberItems" style="width: 80px; margin-bottom: 5px;" required>
+                                            </td>
+                                        </tr>
+                                        <tr class="product-table">
+                                            <td colspan="2">
+                                                <button type="submit" class="btn btn-primary" style="background-color: #4682B4;color:white;">Dodaj do koszyka</button>
+                                            </td>
+                                            <div th:insert="modal1-add-to-cart.html"></div>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </span>
+                            <span th:if="${product.availability == 0}">
+                                <h3 style="color: #4682B4;">Produkt niedostępny</h3>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="product-table">
+                <td colspan="2" class="product-table">
+                    <!--  MODAL -->
+                    <div class="modal modal-warning fade in" th:id="modal-fav-warning+${product.id }" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+                                    <h2>Pomyślnie dodano produkt do ulubionych</h2>
+                                    <span class="glyphicon glyphicon-heart"></span>
+
+                                    <form name="changeAmount" th:action="@{/shop/product/addfav(id=${product.id})}" method="post" class="form-horizontal" id="fav">
+                                        <br>
+                                        <div>
+                                            <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" type="submit">OK</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  MODAL -->
+                    <div class="modal modal-warning fade in" th:id="modal-unfav-warning+${product.id }" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+                                    <h2>Pomyślnie usunięto produkt z ulubionych</h2>
+                                    <span class="glyphicon glyphicon-remove"></span>
+
+                                    <form name="changeAmount" th:action="@{/shop/product/delfav(id=${product.id})}" method="post" class="form-horizontal" id="unfav">
+                                        <br>
+                                        <div>
+                                            <button class="btn btn-primary" style="width: 90px; background-color: #4682B4;color:white" type="submit">OK</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  MODAL -->
+                    <div class="modal modal-warning fade in" th:id="modal-alert-add-warning+${product.id }" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+
+                                    <form name="addAlert" th:action="@{/shop/product/addAlert(id=${product.id}, mail=${mail})}" method="post" class="form-horizontal" id="alert">
+                                        <h3>Wprowadź swój adres email:</h3>
+                                        <input size="30" type="email" class="form-control-plaintext" id="mail" name="mail" required>
+                                        <br>
+                                        <br>
+                                        <span class="glyphicon glyphicon-envelope"></span>
+                                        <br>
+                                        <br>
+
+                                        <div class="row">
+                                            <button type="button" class="btn btn-outline" data-dismiss="modal" style="margin-top:10px; width:90px;background-color: #838789;color: white" th:text="Anuluj"></button>
+                                            <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" type="submit">Potwierdź</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  MODAL -->
+                    <div class="modal modal-warning fade in" th:id="modal-alert" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+                                    <h3>Pomyślnie dodano alert dostępności</h3>
+                                    <br>
+                                    <span class="glyphicon glyphicon-envelope"></span>
+
+                                    <form name="changeAmount" th:action="@{/shop/product/delfav(id=${product.id})}" method="post" class="form-horizontal" id="alert-added">
+                                        <br>
+                                        <div>
+                                            <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" type="submit">OK</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  MODAL -->
+                    <div class="modal modal-warning fade in" th:id="modal-added-to-cart" id="modal-added-to-cart">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+                                    <h3>Pomyślnie dodano produkt do koszyka</h3>
+                                    <br>
+                                    <span class="glyphicon glyphicon-shopping-cart"></span>
+
+                                    <form name="changeAmount" th:action="@{/shop/product/back(id=${product.id})}" method="post" class="form-horizontal" id="added-to-cart">
+                                        <br>
+                                        <div>
+                                            <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" type="submit">OK</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--  MODAL -->
+                    <div class="modal modal-warning fade in" th:id="modal-not-added-to-cart" id="modal-not-added-to-cart">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 15px;margin-top: 5px"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body" style="text-align: center; height: 190px; width: 600px;">
+                                    <h3>Nie można dodać takiej liczby sztuk produktu do koszyka</h3>
+                                    <br>
+                                    <span class="glyphicon glyphicon-remove"></span>
+
+                                    <form name="changeAmount" th:action="@{/shop/product/back(id=${product.id})}" method="post" class="form-horizontal" id="not-added-to-cart">
+                                        <br>
+                                        <div>
+                                            <button class="btn btn-primary" style="width: 90px;margin-top:10px; background-color: #4682B4;color:white" type="submit">OK</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="height: 150px; background-color: azure; text-align: justify; border: 1px solid #34302d; padding: 15px;">
+                        <p th:text="${product.itemDescription}"></p>
+                    </div>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <h1 th:attr="modal=${modal}" id="modal-status"></h1>
+<!--    <h1 id="checksum1"></h1>-->
+<!--    <h1 id="checksum2"></h1>-->
+<!--    <h1 id="checksum"></h1>-->
+<!--    <br>-->
+    <button id="btn-added-to-cart" data-toggle="modal" data-target="#modal-added-to-cart" th:attr="data-target='#modal-added-to-cart'" hidden></button>
+    <button id="btn-not-added-to-cart" data-toggle="modal" data-target="#modal-not-added-to-cart" th:attr="data-target='#modal-not-added-to-cart'" hidden></button>
+    <button id="btn-modal-alert" data-toggle="modal" data-target="#modal-alert" th:attr="data-target='#modal-alert'" hidden></button>
+</div>
+
+<script>
+    // Get the form element
+    var form = document.getElementById("alert");
+
+
+    window.onload = function() {
+        var element = document.getElementById('modal-status');
+        var modalStatus = element.getAttribute('modal');
+
+        if (modalStatus === '1') {
+            // document.getElementById("checksum1").innerText = "1 if";
+            var button1 = document.getElementById('btn-added-to-cart');
+            button1.click();
+        }
+
+        if (modalStatus === '2') {
+            // document.getElementById("checksum2").innerText = "2 if";
+            var button2 = document.getElementById('btn-not-added-to-cart');
+            button2.click();
+        }
+
+        if (modalStatus === '3') {
+            // document.getElementById("checksum2").innerText = "2 if";
+            var button3 = document.getElementById('btn-modal-alert');
+            button3.click();
+        }
+
+        document.getElementById("checksum").innerText = modalStatus;
+    }
+
+
+    // // Listen for the submit event
+    // form.addEventListener("submit", function(event) {
+    //     event.preventDefault(); // prevent the form from submitting
+    //
+    //     // Validate the form
+    //     if (form.checkValidity()) {
+    //         // The form is valid, so show the modal
+    //         var modal = document.getElementById("modal-alert");
+    //         modal.style.display = "block";
+    //     }
+    // });
+    //
+    // // Get the close button
+    // var closeButton = document.querySelector(".close");
+    //
+    // // Listen for the click event on the close button
+    // closeButton.addEventListener("click", function() {
+    //     var modal = document.getElementById("myModal");
+    //     modal.style.display = "none";
+    // });
+</script>
+
+</body>
+</html>

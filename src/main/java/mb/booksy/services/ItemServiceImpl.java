@@ -1,15 +1,16 @@
 package mb.booksy.services;
 
+import mb.booksy.domain.inventory.AvailabilityAlert;
+import mb.booksy.domain.inventory.Favorite;
 import mb.booksy.domain.inventory.Item;
+import mb.booksy.domain.order.ItemInReturn;
 import mb.booksy.domain.order.Order;
+import mb.booksy.domain.order.OrderReturn;
 import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.domain.order.cart.ItemInCart;
 import mb.booksy.domain.user.Client;
 import mb.booksy.exceptions.AuthException;
-import mb.booksy.repository.CartRepository;
-import mb.booksy.repository.ItemInCartRepository;
-import mb.booksy.repository.ItemRepository;
-import mb.booksy.repository.OrderRepository;
+import mb.booksy.repository.*;
 import mb.booksy.web.mapper.ItemMapper;
 import mb.booksy.web.model.ItemDto;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -34,14 +35,26 @@ public class ItemServiceImpl implements ItemService {
     private final ItemInCartRepository itemInCartRepository;
     private final ItemMapper itemMapper;
     private final UserAuthenticationService userAuthenticationService;
+    private final ClientRepository clientRepository;
+    private final FavoriteRepository favoriteRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, CartRepository cartRepository, OrderRepository orderRepository, ItemInCartRepository itemInCartRepository, ItemMapper itemMapper, UserAuthenticationService userAuthenticationService) {
+    private final AvailabilityAlertRepository availabilityAlertRepository;
+
+    private final OrderReturnRepository orderReturnRepository;
+    private final ItemInReturnRepository itemInReturnRepository;
+
+    public ItemServiceImpl(ItemRepository itemRepository, CartRepository cartRepository, OrderRepository orderRepository, ItemInCartRepository itemInCartRepository, ItemMapper itemMapper, UserAuthenticationService userAuthenticationService, ClientRepository clientRepository, FavoriteRepository favoriteRepository, AvailabilityAlertRepository availabilityAlertRepository, OrderReturnRepository orderReturnRepository, ItemInReturnRepository itemInReturnRepository) {
         this.itemRepository = itemRepository;
         this.cartRepository = cartRepository;
         this.orderRepository = orderRepository;
         this.itemInCartRepository = itemInCartRepository;
         this.itemMapper = itemMapper;
         this.userAuthenticationService = userAuthenticationService;
+        this.clientRepository = clientRepository;
+        this.favoriteRepository = favoriteRepository;
+        this.availabilityAlertRepository = availabilityAlertRepository;
+        this.orderReturnRepository = orderReturnRepository;
+        this.itemInReturnRepository = itemInReturnRepository;
     }
 
     @Override
@@ -49,6 +62,21 @@ public class ItemServiceImpl implements ItemService {
         Set<Item> items = new HashSet<>();
         itemRepository.findAll().forEach(items::add);
         return items;
+    }
+
+    @Override
+    public List<ItemDto> findAllItem() {
+        List<ItemDto> items = itemRepository.findAll()
+                .stream()
+                .map(item -> itemMapper.itemToItemDtoFull(item))
+                .collect(Collectors.toList());
+
+        return items;
+    }
+
+    @Override
+    public ItemDto findByItemId(Long itemId) {
+        return itemMapper.itemToItemDtoFull(itemRepository.findByItemId(itemId));
     }
 
     @Override
@@ -149,6 +177,67 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemDto> findAllOrderReturnItem(Long orderReturnId) {
+        List<ItemDto> itemsInOrderReturn = new ArrayList<>();
+        List<ItemInReturn> itemsInReturnIds = itemInReturnRepository.findItemsInOrderReturn(orderReturnId);
+
+        for(ItemInReturn itemInReturn : itemsInReturnIds) {
+            ItemDto newItem = itemMapper.itemToItemDtoFull(findById(itemInReturn.getItem().getId()));
+            newItem.setNumberInOrderReturn(itemInReturn.getNumber());
+            itemsInOrderReturn.add(newItem);
+        }
+
+        return itemsInOrderReturn;
+    }
+
+    @Override
+    public List<ItemDto> orderReturnItemAddNumberFromCart(List<ItemDto> itemsInOrderReturn,
+                                                List<ItemDto> itemsInOrder) {
+
+//        for(ItemDto itemInReturn : itemsInOrderReturn) {
+//            for(ItemDto itemInOrder: itemsInOrder) {
+//                itemInReturn.setCartAmount(itemInOrder.getCartAmount());
+//            }
+//        }
+
+        for(int i = 0; i < itemsInOrderReturn.size(); i++) {
+            for(ItemDto itemInOrder: itemsInOrder) {
+                if (itemsInOrderReturn.get(i).getId() == itemInOrder.getId()) {
+                    itemsInOrderReturn.get(i).setCartAmount(itemInOrder.getCartAmount());
+                }
+            }
+        }
+
+        return itemsInOrderReturn;
+    }
+
+    @Override
+    @Transactional
+    public void deleteItemInOrderReturn(Long orderReturnId, Long itemId) {
+        itemInReturnRepository.deleteItemInOrderReturn(orderReturnId, itemId);
+    }
+
+    @Override
+    public Integer countItemInOrderReturn(Long orderReturnId) {
+        return itemInReturnRepository.countItemsInOrderReturn(orderReturnId);
+    }
+
+    @Override
+    @Transactional
+    public String updateItemNumber(Integer newNumber, Integer maxNumber, Long orderReturnId, Long itemId) {
+
+        if(newNumber > maxNumber)
+            return "Liczba dostępnych sztuk - " + maxNumber;
+        else if(newNumber < 1)
+            return "Liczba sztuk musi być większa od 0";
+        else {
+            itemInReturnRepository.updateItemNumber(newNumber, orderReturnId, itemId);
+            return "";
+        }
+    }
+
+    @Override
+    @Transactional
     public Long getCurrentCartId(Long... client) {
         Long clientId;
         try {
@@ -176,6 +265,29 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Long provideCart() {
+        Client client = (Client)userAuthenticationService.getAuthenticatedUser();
+        List<Cart> carts_list = cartRepository.findClCarts(client.getId());
+        List<Cart> carts = new ArrayList<>();
+
+        if(carts_list.size() != 0)
+            for(int i = 0; i < carts_list.size(); i++) {
+                Order orders = orderRepository.findOrderWithCartId(carts_list.get(i).getId());
+                if((orders == null) || (orders.getIfEnded() == false))
+                    carts.add(carts_list.get(i));
+            }
+
+        if(carts.size() == 0) {
+            Cart newCart = Cart.builder().client(client).initDate(LocalDate.now()).itemNumber(0).build();
+            cartRepository.save(newCart);
+
+            return newCart.getId();
+        }
+
+        return carts.get(0).getId();
+    }
+
+    @Override
     public Item findById(Long itemId) {
         return itemRepository.findById(itemId).orElse(null);
     }
@@ -194,5 +306,48 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteById(Long itemId) {
         itemRepository.deleteById(itemId);
+    }
+
+    @Override
+    public boolean isInCart(Long itemId) {
+        Long cartId = getCurrentCartId();
+
+        if (cartId == -1) {
+            return false;
+        }
+
+        if (!itemInCartRepository.findItemInCart(itemId, cartId).isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean isFavorite(Long itemId) {
+        Long clientId = (userAuthenticationService.getAuthenticatedUser()).getId();
+        Item item = itemRepository.findByItemId(itemId);
+
+        return favoriteRepository.findClientFavorites(clientId).contains(item.getId());
+    }
+
+    @Override
+    public void addToFavorites(Long itemId) {
+        if (!isFavorite(itemId)) {
+            favoriteRepository.save(Favorite.builder().clientId(((Client)userAuthenticationService.getAuthenticatedUser())).itemId(itemRepository.findByItemId(itemId)).build());
+        }
+    }
+
+    @Override
+    public void deleteFromFavorites(Long itemId) {
+        if (isFavorite(itemId)) {
+            favoriteRepository.deleteClientFavoriteItem(itemId, ((Client)userAuthenticationService.getAuthenticatedUser()).getId());
+        }
+    }
+
+    @Override
+    public void addAlert(String mail, Long itemId) {
+        mail = mail.replace(",", "");
+        availabilityAlertRepository.save(new AvailabilityAlert().builder().mail(mail).item(itemRepository.findByItemId(itemId)).build());
     }
 }

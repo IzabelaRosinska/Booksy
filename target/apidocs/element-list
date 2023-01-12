@@ -1,0 +1,17 @@
+mb.booksy
+mb.booksy.domain
+mb.booksy.domain.inventory
+mb.booksy.domain.order
+mb.booksy.domain.order.cart
+mb.booksy.domain.order.delivery
+mb.booksy.domain.order.payment
+mb.booksy.domain.user
+mb.booksy.exceptions
+mb.booksy.jwt
+mb.booksy.repository
+mb.booksy.security
+mb.booksy.services
+mb.booksy.validators
+mb.booksy.web.controller
+mb.booksy.web.mapper
+mb.booksy.web.model

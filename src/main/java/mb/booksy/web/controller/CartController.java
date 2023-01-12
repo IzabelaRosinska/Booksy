@@ -57,7 +57,19 @@ public class CartController {
 
     @PostMapping({"/cart/update", "/cart/update.html"})
     public String updateItemInCart(@RequestParam("itemId") String itemId, @RequestParam("new_number") String new_number) {
-        cartService.updateItemNumber(Long.valueOf(itemId), Integer.valueOf(new_number));
+        try {
+            cartService.updateItemNumber(Long.valueOf(itemId), Integer.valueOf(new_number));
+        } catch (Exception exception) {
+
+        }
+
+        return "redirect:/cart";
+    }
+
+    @PostMapping({"/cart/add", "/cart/add.html"})
+    public String addItemToCart(@RequestParam("itemId") String itemId, @RequestParam("new_number") String new_number) {
+        cartService.addItemToCart(Long.valueOf(itemId), Integer.valueOf(new_number));
+
         return "redirect:/cart";
     }
 }

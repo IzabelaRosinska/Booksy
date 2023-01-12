@@ -1,6 +1,7 @@
 package mb.booksy.services;
 
 import mb.booksy.domain.order.cart.Cart;
+import mb.booksy.domain.order.cart.ItemInCart;
 import mb.booksy.domain.user.Client;
 import mb.booksy.repository.CartRepository;
 import mb.booksy.repository.ClientRepository;
@@ -51,6 +52,34 @@ public class CartServiceImpl implements CartService {
             itemInCartRepository.updateItemNumber(newNumber, itemService.getCurrentCartId(), itemId);
             return "";
         }
+    }
+
+    @Override
+    @Transactional
+    public String addItemToCart(Long itemId, Integer newNumber) {
+        Integer maxNumber = itemRepository.findById(itemId).get().getAvailability();
+
+        if (itemService.isInCart(itemId)) {
+            return updateItemNumber(itemId, newNumber + itemInCartRepository.findItemInCart(itemId, itemService.getCurrentCartId()).get(0).getNumber());
+        }
+
+        if(newNumber > maxNumber)
+            return "Liczba dostępnych sztuk - " + maxNumber;
+        else if(newNumber < 1)
+            return "Liczba sztuk musi być większa od 0";
+        else {
+            itemInCartRepository.save(ItemInCart.builder().number(newNumber).cart(cartRepository.findByCartId(itemService.provideCart())).item(itemRepository.findByItemId(itemId)).build());
+            return "";
+        }
+    }
+    @Override
+    public Integer getItemNumberInCart (Long itemId) {
+
+        if (itemService.getCurrentCartId() == -1) {
+            return -1;
+        }
+
+        return itemInCartRepository.findItemInCart(itemId, itemService.getCurrentCartId()).get(0).getNumber();
     }
 
     @Override

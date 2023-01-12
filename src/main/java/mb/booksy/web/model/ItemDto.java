@@ -10,6 +10,13 @@ public class ItemDto {
     private Integer cartAmount;
     private Double cartPrice;
     private String currency;
+    private String producerName;
+    private String bookType;
+    private String genre;
+    private Double price;
+    private Integer availability;
+    private String itemDescription;
+    private Integer numberInOrderReturn;
 
     @Override
     public boolean equals(Object o) {
@@ -70,5 +77,61 @@ public class ItemDto {
 
     public Double getCartPrice() {
         return cartPrice;
+    }
+
+    public String getProducerName() {
+        return producerName;
+    }
+
+    public void setProducerName(String producerName) {
+        this.producerName = producerName;
+    }
+
+    public String getBookType() {
+        return bookType;
+    }
+
+    public void setBookType(String bookType) {
+        this.bookType = bookType;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
+    public Integer getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Integer availability) {
+        this.availability = availability;
+    }
+
+    public Integer getNumberInOrderReturn() {
+        return numberInOrderReturn;
+    }
+
+    public void setNumberInOrderReturn(Integer numberInOrderReturn) {
+        this.numberInOrderReturn = numberInOrderReturn;
     }
 }

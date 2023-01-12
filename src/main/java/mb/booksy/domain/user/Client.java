@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mb.booksy.domain.inventory.Favorite;
 import mb.booksy.domain.order.Order;
 import mb.booksy.domain.order.cart.Cart;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,4 +54,8 @@ public class Client extends Person {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
+    private Set<Favorite> favorites = new HashSet<>();
+
 }

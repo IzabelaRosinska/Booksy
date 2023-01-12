@@ -47,6 +47,9 @@ public class Order extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<Complaint> complaints = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    private Set<OrderReturn> orderReturns = new HashSet<>();
+
     @Column(name = "order_status")
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/clientLayout :: layout (~{::body},'orders')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+</head>
+<body>
+<!--/*@thymesVar id="complaintDto" type="mb.booksy.web.model.ComplaintDto"*/-->
+<!--/*@thymesVar id="orderDto" type="mb.booksy.web.model.OrderDto"*/-->
+<!--/*@thymesVar id="itemInReturnDto" type="mb.booksy.web.model.ItemInReturnDto"*/-->
+<br>
+<div class="formgroup row">
+    <div class="form-group col-md-8">
+        <div style="text-align: left;">
+            <button id="back-button" class="btn btn-primary" onclick="history.back()" style="background-color: #4682B4;color:white;">Powrót</button>
+            <!--                <a type="button" class="btn btn-outline" th:href="@{/receiver}" style="width: 250px; height:30px; margin-left:30px; vertical-align: middle; margin-top: 10px; border:2px solid black; background-color: white; color: black">Powrót</a>-->
+        </div>
+        <br>
+        <br>
+        <h1>Szczegóły zwrotu</h1>
+        <br>
+
+        <table class="table table-striped" style="margin-top: 20px; width: 1500px">
+            <thead>
+            <tr>
+                <th style="width: 120px;vertical-align: middle;text-align: left">Nr zwrotu</th>
+                <th style="width: 120px;vertical-align: middle">Nr zamówienia</th>
+                <th style="width: 140px;vertical-align: middle">Data zwrotu</th>
+                <th style="width: 80px;margin-left: 10px;vertical-align: middle">Akcpetacja</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${orderReturnDto.returnId}" style="text-align: left;vertical-align: middle"></td>
+                <td th:text="${orderReturnDto.orderId}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${orderReturnDto.initDate}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${orderReturnDto.acceptance}" style="text-align: left;vertical-align: middle"/>
+            </tr>
+            </tbody>
+        </table>
+
+        <br>
+        <br>
+        <fieldset>
+            <legend>Zwracane produkty</legend>
+
+            <table id="find_shortest_terms" class="table table-striped" style="margin-top: 20px; width: 760px">
+
+                <tbody>
+                <tr th:each="itemDto : ${selections}">
+                    <td><img th:src="|data:image/jpg;base64,${itemDto.itemImage}|" id="img" width="100px" height="120px" style="margin: 10px 0px 10px 10px"/></td>
+                    <td th:text="${itemDto.itemName}" style="text-align: left;vertical-align: middle"/>
+                    <td th:text="${itemDto.producerName}" style="text-align: left;vertical-align: middle"/>
+                    <td th:text="${itemDto.bookType}" style="text-align: left;vertical-align: middle"/>
+                    <td th:text="${itemDto.price} + ' zł'" style="text-align: left;vertical-align: middle"/>
+                    <td th:text="${itemDto.numberInOrderReturn}  + ' szt.'" style="text-align: left;vertical-align: middle"/>
+                </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+    </div>
+</div>
+</body>
+</html>

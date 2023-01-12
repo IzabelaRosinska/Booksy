@@ -34,6 +34,36 @@
             </tr>
             </tbody>
         </table>
+
+        <br>
+        <br>
+
+        <h1>Moje Zwroty</h1>
+        <table class="table table-striped" style="margin-top: 20px; width: 1500px">
+            <thead>
+            <tr>
+                <th style="width: 120px;vertical-align: middle;text-align: left">Nr zwrotu</th>
+                <th style="width: 120px;vertical-align: middle">Nr zamówienia</th>
+                <th style="width: 140px;vertical-align: middle">Data zwrotu</th>
+                <th style="width: 80px;margin-left: 10px;vertical-align: middle">Akcpetacja</th>
+                <th style="width: 80px;margin-left: 10px;vertical-align: middle"></th>
+                <th style="width: 80px;margin-left: 10px;vertical-align: middle"></th>
+                <th style="width: 80px;margin-left: 10px;vertical-align: middle">Szczegóły</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderReturnDto : ${selectionsReturns}">
+                <td th:text="${orderReturnDto.returnId}" style="text-align: left;vertical-align: middle"></td>
+                <td th:text="${orderReturnDto.orderId}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${orderReturnDto.initDate}" style="text-align: left;vertical-align: middle"/>
+                <td th:text="${orderReturnDto.acceptance}" style="text-align: left;vertical-align: middle"/>
+                <td></td>
+                <td></td>
+<!--                <td><a class="btn btn-primary" th:href="@{/account/orderReturn(orderReturnId=${orderReturnDto.returnId})}" style="width: 90px; background-color: #4682B4;color:white;">Szczegóły</a></td>-->
+                <td style="text-align: center;vertical-align: middle"><a th:href="@{/account/orderReturn(orderReturnId=${orderReturnDto.returnId})}"><span class="glyphicon glyphicon-search"></span></a></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

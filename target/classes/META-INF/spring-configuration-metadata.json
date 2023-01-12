@@ -1,0 +1,27 @@
+{
+  "groups": [
+    {
+      "name": "application.jwt",
+      "type": "mb.booksy.jwt.JwtConfig",
+      "sourceType": "mb.booksy.jwt.JwtConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "application.jwt.secret-key",
+      "type": "java.lang.String",
+      "sourceType": "mb.booksy.jwt.JwtConfig"
+    },
+    {
+      "name": "application.jwt.token-expiration-after-days",
+      "type": "java.lang.Integer",
+      "sourceType": "mb.booksy.jwt.JwtConfig"
+    },
+    {
+      "name": "application.jwt.token-prefix",
+      "type": "java.lang.String",
+      "sourceType": "mb.booksy.jwt.JwtConfig"
+    }
+  ],
+  "hints": []
+}

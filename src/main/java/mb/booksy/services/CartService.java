@@ -18,4 +18,8 @@ public interface CartService  extends BaseService<Cart, Long> {
     Integer getPoints();
 
     void addPoints();
+
+    String addItemToCart(Long itemId, Integer newNumber);
+
+    Integer getItemNumberInCart(Long itemId);
 }

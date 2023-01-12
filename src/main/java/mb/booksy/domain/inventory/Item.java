@@ -16,13 +16,16 @@ import java.util.*;
 public class Item extends BaseEntity {
 
     @Builder
-    public Item(Long id, String itemName, String producerName, Double price, Integer availability, byte[] itemImage) {
+    public Item(Long id, String itemName, String producerName, String genre, String bookType, Double price, Integer availability, byte[] itemImage, String itemDescription) {
         super(id);
         this.itemName = itemName;
         this.producerName = producerName;
+        this.genre = genre;
+        this.bookType = bookType;
         this.price = price;
         this.availability = availability;
         this.itemImage = itemImage;
+        this.itemDescription = itemDescription;
     }
 
     @NotBlank
@@ -35,6 +38,11 @@ public class Item extends BaseEntity {
     @Column(name = "producer_name")
     private String producerName;
 
+    @Column(name = "genre")
+    private String genre;
+
+    @Column(name = "book_type")
+    private String bookType;
 
     @Column(name = "price")
     private Double price;
@@ -46,12 +54,23 @@ public class Item extends BaseEntity {
     @Column(name = "image")
     private byte[] itemImage;
 
+    @NotBlank
+    @NotEmpty
+    @Column(name = "item_description")
+    private String itemDescription;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id")
     private Offer offer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
     private Set<ItemInCart> cartItems = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id")
+    private Set<Favorite> favorites = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "item")
+    private Set<AvailabilityAlert> alerts = new HashSet<>();
 
     public byte[] getItemImage() {
         return itemImage;

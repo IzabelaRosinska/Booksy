@@ -17,7 +17,7 @@ public interface ItemInCartRepository  extends CrudRepository<ItemInCart, Long> 
     void deleteItemInCart(Long cartId, Long itemId);
 
     @Modifying
-    @Query(nativeQuery = true, value = "UPDATE items_in_carts INNER JOIN items ON items_in_carts.item_id = items.id INNER JOIN carts ON items_in_carts.cart_id = carts.id SET items_in_carts.number = ?1 WHERE (items_in_carts.item_id = ?2 AND items_in_carts.cart_id = ?3)")
+    @Query(nativeQuery = true, value = "UPDATE items_in_carts SET items_in_carts.number = ?1 WHERE (items_in_carts.item_id = ?3 AND items_in_carts.cart_id = ?2)")
     void updateItemNumber(Integer new_number, Long cartId, Long itemId);
 
     @Query(nativeQuery = true, value = "SELECT SUM(items_in_carts.number * items.price) FROM items_in_carts INNER JOIN items ON items_in_carts.item_id = items.id INNER JOIN carts ON items_in_carts.cart_id = carts.id WHERE items_in_carts.cart_id = ?1")

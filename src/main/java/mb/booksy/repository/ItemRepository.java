@@ -2,6 +2,7 @@ package mb.booksy.repository;
 
 import mb.booksy.domain.inventory.Item;
 import mb.booksy.domain.order.Order;
+import mb.booksy.domain.order.delivery.DeliveryPoint;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import java.util.Collection;
@@ -17,4 +18,7 @@ public interface ItemRepository extends CrudRepository<Item, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM items WHERE id = ?1")
     Item findByItemId(Long itemId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM items")
+    List<Item> findAll();
 }
