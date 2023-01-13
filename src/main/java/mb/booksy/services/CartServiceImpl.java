@@ -79,10 +79,15 @@ public class CartServiceImpl implements CartService {
         else if(newNumber < 1)
             return "Liczba sztuk musi być większa od 0";
         else {
+            itemInCartRepository.save(ItemInCart.builder()
+                    .number(newNumber)
+                    .cart(cartRepository.findByCartId(itemService.provideCart()))
+                    .item(itemRepository.findByItemId(itemId)).build());
+
             cartRepository.updateCartSize(
                     cartRepository.findCartSize(itemService.getCurrentCartId()) + newNumber,
                     itemService.getCurrentCartId());
-            itemInCartRepository.save(ItemInCart.builder().number(newNumber).cart(cartRepository.findByCartId(itemService.provideCart())).item(itemRepository.findByItemId(itemId)).build());
+
             return "";
         }
     }
