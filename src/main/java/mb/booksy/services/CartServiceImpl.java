@@ -37,6 +37,11 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void deleteItemFromCart(Long itemId) {
+        cartRepository.updateCartSize(
+                cartRepository.findCartSize(itemService.getCurrentCartId())
+                        - itemInCartRepository
+                        .findItemInCart(itemId, itemService.getCurrentCartId()).get(0).getNumber(),
+                itemService.getCurrentCartId());
         itemInCartRepository.deleteItemInCart(itemService.getCurrentCartId(), itemId);
     }
 
@@ -49,6 +54,12 @@ public class CartServiceImpl implements CartService {
         else if(newNumber < 1)
             return "Liczba sztuk musi być większa od 0";
         else {
+            cartRepository.updateCartSize(
+                    cartRepository.findCartSize(itemService.getCurrentCartId())
+                            - itemInCartRepository
+                            .findItemInCart(itemId, itemService.getCurrentCartId()).get(0).getNumber()
+                            + newNumber,
+                    itemService.getCurrentCartId());
             itemInCartRepository.updateItemNumber(newNumber, itemService.getCurrentCartId(), itemId);
             return "";
         }
@@ -68,6 +79,9 @@ public class CartServiceImpl implements CartService {
         else if(newNumber < 1)
             return "Liczba sztuk musi być większa od 0";
         else {
+            cartRepository.updateCartSize(
+                    cartRepository.findCartSize(itemService.getCurrentCartId()) + newNumber,
+                    itemService.getCurrentCartId());
             itemInCartRepository.save(ItemInCart.builder().number(newNumber).cart(cartRepository.findByCartId(itemService.provideCart())).item(itemRepository.findByItemId(itemId)).build());
             return "";
         }

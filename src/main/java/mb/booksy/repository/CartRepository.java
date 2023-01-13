@@ -2,6 +2,7 @@ package mb.booksy.repository;
 
 import mb.booksy.domain.order.cart.Cart;
 import mb.booksy.domain.user.Client;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -17,4 +18,8 @@ public interface CartRepository extends CrudRepository<Cart, Long> {
 
     @Query(nativeQuery = true, value = "select item_number from carts where id = ?1")
     Integer findCartSize(Long cartId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE carts SET carts.item_number = ?1 WHERE carts.id = ?2")
+    void updateCartSize(Integer new_number, Long cartId);
 }
